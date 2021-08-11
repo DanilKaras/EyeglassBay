@@ -16,25 +16,25 @@ namespace EyeglassBay.Persistence
                 new ()
                 {
                     ProductName = "PERSOL PO3175V 9057 Tortoise Grey Demo Lens Men's Eyeglasses 52 mm",
-                    Brand = "",
-                    Model = "",
-                    Color = "",
-                    Price = 119
+                    Brand = "Versace",
+                    Model = "ve4359",
+                    Color = "521771",
+                    Price = 109
                 },
                 new ()
                 {
                     ProductName = "SAINT LAURENT SL7 006 Black Havana Demo Lens Unisex Eyeglasses 51mm B7",
-                    Brand = "",
-                    Model = "",
-                    Color = "",
+                    Brand = "SAINT LAURENT",
+                    Model = "SL7",
+                    Color = "006",
                     Price = 124.44
                 },
                 new()
                 {
                     ProductName = "Burberry BE4273 30015V Black Men's Authentic Sunglasses 52-21",
-                    Brand = "",
-                    Model = "",
-                    Color = "",
+                    Brand = "Burberry",
+                    Model = "BE4273",
+                    Color = "30015V",
                     Price = 139
                 }
             };
