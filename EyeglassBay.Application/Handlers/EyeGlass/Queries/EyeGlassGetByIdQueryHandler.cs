@@ -7,7 +7,7 @@ using MediatR;
 
 namespace EyeglassBay.Application.Handlers
 {
-    public class GetEyeGlassByIdQueryHandler
+    public class EyeGlassGetByIdQueryHandler
     {
         public class Query : IRequest<EyeGlass>
         {

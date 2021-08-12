@@ -1,3 +1,5 @@
+using EyeglassBay.Api.Extensions;
+using EyeglassBay.Application.Core;
 using EyeglassBay.Application.Handlers;
 using EyeglassBay.Persistence;
 using MediatR;
@@ -25,24 +27,7 @@ namespace EyeglassBay.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo {Title = "EyeglassBay.Api", Version = "v1"});
-            });
-
-
-            services.AddDbContext<DataContext>(opt =>
-            {
-                opt.UseNpgsql(_config.GetConnectionString("DefaultConnection"));
-            });
-            services.AddCors(opt =>
-            {
-                opt.AddPolicy("CorsPolicy", policy =>
-                {
-                    policy.AllowAnyMethod().AllowAnyHeader().WithOrigins("http://localhost:3000");
-                });
-            });
-            services.AddMediatR(typeof(GetEyeGlassesQueryHandler).Assembly);
+            services.AddApplicationServices(_config);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

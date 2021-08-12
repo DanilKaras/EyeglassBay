@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EyeglassBay.Application.Handlers
 {
-    public class GetEyeGlassesQueryHandler
+    public class EyeGlassesGetQueryHandler
     {
         public class Query : IRequest<IList<Domain.Entities.EyeGlass>>
         {
