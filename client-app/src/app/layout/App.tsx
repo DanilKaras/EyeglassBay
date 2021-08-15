@@ -1,31 +1,37 @@
-import React, {useEffect, useState} from 'react';
-import {Container, Header, List} from "semantic-ui-react";
+import React, {useEffect} from 'react';
+import {Container, List} from "semantic-ui-react";
 import {EyeGlass} from "../models/eyeGlass";
 import NavBar from "./NavBar";
-import agent from "../api/agent";
+import {useStore} from "../stores/store";
+import {observer} from "mobx-react-lite";
+import LoadingComponent from "./LoadingComponent";
 
 function App() {
-    const [eyeGlasses, setEyeGlasses] = useState<EyeGlass[]>([]);
+
+    const {eyeglassStore} = useStore();
     
     useEffect(() => {
-        agent.EyeGlasses.listAll().then(response => {
-            setEyeGlasses(response);
-        })
-    }, [])
-  return (
-    <>
-      <NavBar/>
-      <Container style={{marginTop: '7em'}}>
-          <List>
-              {eyeGlasses.map((eyeGlass: EyeGlass) => (
-                  <List.Item key={eyeGlass.id}>
-                      {eyeGlass.productName}
-                  </List.Item>
-              ))}
-          </List>
-      </Container>
-    </>
-  );
+        const loadEyeglasses = async () => {
+            await eyeglassStore.loadEyeglasses();
+        }
+        loadEyeglasses();
+    }, [eyeglassStore])
+
+    if (eyeglassStore.loadingInitial) return <LoadingComponent content='Loading app'/>
+    return (
+        <>
+            <NavBar/>
+            <Container style={{marginTop: '7em'}}>
+                <List>
+                    {eyeglassStore.eyeGlasses.map((eyeGlass: EyeGlass) => (
+                        <List.Item key={eyeGlass.id}>
+                            {eyeGlass.productName}
+                        </List.Item>
+                    ))}
+                </List>
+            </Container>
+        </>
+    );
 }
 
-export default App;
+export default observer(App);
