@@ -20,7 +20,7 @@ namespace EyeglassBay.Api.Controllers
         {
             var query = new EyeGlassesGetQueryHandler.Query();
             var result = await Mediator.Send(query, cancellationToken);
-            return Ok(result);
+            return HandleResult(result);
         }
 
         [HttpGet("{id}")]
@@ -28,31 +28,31 @@ namespace EyeglassBay.Api.Controllers
         {
             var query = new EyeGlassGetByIdQueryHandler.Query {Id = id};
             var result = await Mediator.Send(query, cancellationToken);
-            return Ok(result);
+            return HandleResult(result);
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateEyeGlass([FromBody]EyeGlass eyeGlass, CancellationToken cancellationToken)
         {
             var command = new EyeGlassCreateCommandHandler.Command {EyeGlass = eyeGlass};
-            await Mediator.Send(command, cancellationToken);
-            return Ok();
+            var result = await Mediator.Send(command, cancellationToken);
+            return HandleResult(result);
         }
         [HttpPut("{id}")]
         public async Task<IActionResult> EditEyeGlass(Guid id, EyeGlass eyeGlass, CancellationToken cancellationToken)
         {
             eyeGlass.Id = id;
             var command = new EyeGlassEditCommandHandler.Command {EyeGlass = eyeGlass};
-            await Mediator.Send(command, cancellationToken);
-            return Ok();
+            var result = await Mediator.Send(command, cancellationToken);
+            return HandleResult(result);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteEyeGlass(Guid id, CancellationToken cancellationToken)
         {
             var command = new EyeGlassDeleteCommandHandler.Command {Id = id};
-            await Mediator.Send(command, cancellationToken);
-            return Ok();
+            var result = await Mediator.Send(command, cancellationToken);
+            return HandleResult(result);
         }
     }
 }
