@@ -25,7 +25,7 @@ const EyeglassList = () => {
                 {eyeglassStore.eyeGlasses.map((eyeGlass: EyeGlass) => (
                         <List.Item key={eyeGlass.id}>
                             {eyeGlass.productName}
-                            </List.Item>
+                        </List.Item>
                     ))}
             </List>
         </>
