@@ -1,0 +1,1 @@
+dotnet ef migrations add IdentityAdded -p EyeglassBay.Persistence -s EyeglassBay.Api
