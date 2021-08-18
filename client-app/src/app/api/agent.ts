@@ -4,7 +4,7 @@ import {toast} from "react-toastify";
 import {history} from '../../index';
 import {store} from "../stores/store";
 import {User, UserFormValues} from "../models/user";
-axios.defaults.baseURL = 'http://localhost:5000/api';
+axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
 axios.interceptors.request.use(config => {
     const token = store.commonStore.token;
@@ -37,7 +37,7 @@ axios.interceptors.response.use(async response => {
             }
             break;
         case 401:
-            toast.error('unauthorised');
+            //toast.error('unauthorised');
             break;
         case 404:
             history.push('/not-found');

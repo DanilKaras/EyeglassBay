@@ -66,6 +66,7 @@ namespace EyeglassBay.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<UserDto>> GetCurrentUser()
         {
+            if (User.Identity == null || !User.Identity.IsAuthenticated) return Unauthorized();
             var user = await _userManager.FindByEmailAsync(User.FindFirstValue(ClaimTypes.Email));
             return CreateUserObject(user);
         }
@@ -75,7 +76,7 @@ namespace EyeglassBay.Api.Controllers
             return new UserDto
             {
                 Token = _tokenService.CreateToken(user),
-                Email = user.Email
+                Email = user?.Email
             };
         }
     }

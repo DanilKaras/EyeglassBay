@@ -51,11 +51,20 @@ namespace EyeglassBay.Api
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            //use wwwroot
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
+            
             app.UseCors("CorsPolicy");
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapFallbackToController("Index", "Fallback");
+            });
         }
     }
 }
