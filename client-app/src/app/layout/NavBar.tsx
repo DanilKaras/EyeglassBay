@@ -4,7 +4,7 @@ import {useStore} from "../stores/store";
 import {observer} from "mobx-react-lite";
 
 const NavBar = () => {
-    const {userStore: {user, logout}} = useStore();
+    const {userStore: {logout}} = useStore();
     return(
         <Menu inverted fixed='top'>
             <Container>

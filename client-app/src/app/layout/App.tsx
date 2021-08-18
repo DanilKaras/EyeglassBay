@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {Container} from "semantic-ui-react";
 import NavBar from "./NavBar";
 import {observer} from "mobx-react-lite";
-import {Route, Switch, useLocation} from 'react-router-dom';
+import {Route, Switch} from 'react-router-dom';
 import HomePage from '../../features/home/HomePage';
 import PrivateRoute from "./PrivateRoute";
 import {useStore} from "../stores/store";
@@ -17,7 +17,7 @@ import Search from '../../features/search/Search';
 import {ToastContainer} from "react-toastify";
 
 function App() {
-    const location = useLocation();
+
     const { commonStore, userStore} = useStore();
 
 
