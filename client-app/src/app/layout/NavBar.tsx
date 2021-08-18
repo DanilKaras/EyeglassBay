@@ -14,7 +14,6 @@ const NavBar = () => {
                 <Menu.Item as={NavLink} to={'/search'} name={'Search'} />
                 <Menu.Item as={NavLink} to={'/eyeglasses'} name='Eye Glasses'/>
                 <Menu.Item as={NavLink} to={'/document-upload'} name='Upload Doc'/>
-                <Menu.Item as={NavLink} to={'/errors'} name={'Errors'}/>
                 <Menu.Item position={'right'}>
                     <Image src={'/user.png'} avatar spaced={'right'}/>
                     <Dropdown pointing={'top left'} text={'Admin'}>
