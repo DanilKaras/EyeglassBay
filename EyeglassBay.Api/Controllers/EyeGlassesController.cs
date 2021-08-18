@@ -5,10 +5,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using EyeglassBay.Application.Handlers;
 using EyeglassBay.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace EyeglassBay.Api.Controllers
 {
+    [AllowAnonymous]
     public class EyeGlassesController : BaseApiController
     {
 

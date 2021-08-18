@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { Header, Segment, Icon, Button } from "semantic-ui-react";
 
-
 const NotFound = () =>{
     return (
         <Segment>

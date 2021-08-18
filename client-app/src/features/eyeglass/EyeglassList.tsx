@@ -14,7 +14,6 @@ const EyeglassList = () => {
             await eyeglassStore.loadEyeglasses();
         }
         loadEyeglasses();
-        debugger;
     }, [eyeglassStore])
 
     if (eyeglassStore.loadingInitial) return <LoadingComponent content='Loading app' />

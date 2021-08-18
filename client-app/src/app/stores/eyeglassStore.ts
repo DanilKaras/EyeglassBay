@@ -1,4 +1,4 @@
-import {makeAutoObservable, runInAction} from "mobx";
+import {makeAutoObservable} from "mobx";
 import {EyeGlass} from "../models/eyeGlass";
 import agent from "../api/agent";
 

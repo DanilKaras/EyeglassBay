@@ -2,10 +2,8 @@ import { Container, Header, Segment } from "semantic-ui-react";
 import { useStore } from "../../app/stores/store";
 import {observer} from "mobx-react-lite";
 
-
 const ServerError = () => {
     const {commonStore} = useStore();
-    debugger;
     return (
         <Container>
             <Header as='h1' content='Server Error' />

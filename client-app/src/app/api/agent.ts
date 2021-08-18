@@ -3,7 +3,14 @@ import {EyeGlass} from "../models/eyeGlass";
 import {toast} from "react-toastify";
 import {history} from '../../index';
 import {store} from "../stores/store";
+import {User, UserFormValues} from "../models/user";
 axios.defaults.baseURL = 'http://localhost:5000/api';
+
+axios.interceptors.request.use(config => {
+    const token = store.commonStore.token;
+    if(token) config.headers.Authorization = `Bearer ${token}`;
+    return config;
+})
 
 axios.interceptors.response.use(async response => {
     return response; 
@@ -36,13 +43,18 @@ axios.interceptors.response.use(async response => {
             history.push('/not-found');
             break;
         case 500:
-            debugger;
             store.commonStore.setServerError(error);
             history.push('/server-error');
             break;
     }
     return Promise.reject(error);
 });
+
+
+const Account ={
+    current: () => request.get<User>('/account'),
+    login: (user: UserFormValues) => request.post<User>('/account/login', user)
+}
 
 const responseBody = <T>(response: AxiosResponse<T>) => response.data;
 
@@ -55,14 +67,15 @@ const request = {
 
 const EyeGlasses = {
     listAll: () => request.get<EyeGlass[]>('/EyeGlasses'),
-    getById: (id: string) => request.get<EyeGlass>('/EyeGlasses/{id}'),
+    getById: (id: string) => request.get<EyeGlass>(`/EyeGlasses/${id}`),
     create: (eyeGlass: EyeGlass) => request.post<void>('/EyeGlasses', eyeGlass),
     update: (eyeGlass: EyeGlass) => request.put<void>(`/EyeGlasses/${eyeGlass.id}`, eyeGlass),
     delete: (id: string) => request.del<void>(`/EyeGlasses/${id}`),
 }
 
 const agent = {
-    EyeGlasses
+    EyeGlasses, 
+    Account
 }
 
 export default agent;
