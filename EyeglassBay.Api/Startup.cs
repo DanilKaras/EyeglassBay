@@ -67,7 +67,7 @@ namespace EyeglassBay.Api
                 ))
                 .ScriptSources(s => s.Self()
                     .CustomSources(
-                        "sha256-+PF2pbw2v67TjFUA+l+xlZxsjoJSDu6uVt0nCeSm0EM="
+                        "sha256-8cif3HVcZMQmz002SNt8xTuOGlfdcERoEg6QGIhyEXk="
                     ))
             );
             
