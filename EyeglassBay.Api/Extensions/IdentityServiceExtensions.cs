@@ -2,9 +2,9 @@ using System.Text;
 using System.Threading.Tasks;
 using EyeglassBay.Api.Services;
 using EyeglassBay.Domain.Entities;
+using EyeglassBay.Infrastructure.EbayParser;
 using EyeglassBay.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -58,7 +58,8 @@ namespace EyeglassBay.Api.Extensions
             //     });
             // });
             // services.AddTransient<IAuthorizationHandler, IsHostRequirementHandler>();
-             services.AddScoped<TokenService>();
+            services.AddScoped<TokenService>();
+            services.AddScoped<EbayParser>();
             return services;
         }
     }

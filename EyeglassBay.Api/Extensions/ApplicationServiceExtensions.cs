@@ -66,6 +66,8 @@ namespace EyeglassBay.Api.Extensions
             services.AddMediatR(typeof(EyeGlassesGetQueryHandler).Assembly);
 
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
+            
+            
             return services;
         }
     }

@@ -19,6 +19,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\EyeglassBay.Application\EyeglassBay.Application.csproj" />
+      <ProjectReference Include="..\EyeglassBay.Infrastructure\EyeglassBay.Infrastructure.csproj" />
     </ItemGroup>
 
     <ItemGroup>

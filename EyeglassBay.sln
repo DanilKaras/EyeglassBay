@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EyeglassBay.Domain", "Eyegl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EyeglassBay.Persistence", "EyeglassBay.Persistence\EyeglassBay.Persistence.csproj", "{13BFB368-9D6A-4B47-9F24-C23F8F30570B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EyeglassBay.Infrastructure", "EyeglassBay.Infrastructure\EyeglassBay.Infrastructure.csproj", "{271AA811-F7F9-4626-820E-AEB03F1627B6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{13BFB368-9D6A-4B47-9F24-C23F8F30570B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{13BFB368-9D6A-4B47-9F24-C23F8F30570B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{13BFB368-9D6A-4B47-9F24-C23F8F30570B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{271AA811-F7F9-4626-820E-AEB03F1627B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{271AA811-F7F9-4626-820E-AEB03F1627B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{271AA811-F7F9-4626-820E-AEB03F1627B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{271AA811-F7F9-4626-820E-AEB03F1627B6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

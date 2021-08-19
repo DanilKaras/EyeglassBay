@@ -52,7 +52,8 @@ namespace EyeglassBay.Api
                     "https://fonts.googleapis.com",
                     "sha256-/epqQuRElKW1Z83z1Sg8Bs2MKi99Nrq41Z3fnS2Nrgk=",
                     "sha256-2aahydUs+he2AO0g7YZuG67RGvfE9VXGbycVgIwMnBI=",
-                    "sha256-+oGcdj5BhO6SoiIGYIkPOMYi7d2h2Pp/bkJLBfYL+kk="
+                    "sha256-+oGcdj5BhO6SoiIGYIkPOMYi7d2h2Pp/bkJLBfYL+kk=",
+                    "sha256-wkAU1AW/h8YFx0XlzvpTllAKnFEO2tw8aKErs5a26LY="
                 ))
                 .FontSources(s => s.Self().CustomSources(
                     "https://fonts.gstatic.com", "data:"
@@ -67,7 +68,9 @@ namespace EyeglassBay.Api
                 ))
                 .ScriptSources(s => s.Self()
                     .CustomSources(
-                        "sha256-8cif3HVcZMQmz002SNt8xTuOGlfdcERoEg6QGIhyEXk="
+                        "sha256-8cif3HVcZMQmz002SNt8xTuOGlfdcERoEg6QGIhyEXk=",
+                        "sha256-Tui7QoFlnLXkJCSl1/JvEZdIXTmBttnWNxzJpXomQjg=",
+                        "sha256-Tj9wVjD6J24cRQ8weyZ9hFZG0TLwgAk4Y++rUjhiuH8="
                     ))
             );
             
