@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using EyeglassBay.Application.Core;
+using EyeglassBay.Domain.Models;
 using EyeglassBay.Infrastructure.EbayParser;
-using EyeglassBay.Infrastructure.EbayParser.Models;
 using MediatR;
 
-namespace EyeglassBay.Application.Handlers.Ebay.Queries
+namespace EyeglassBay.Application.Handlers
 {
-    public class EbayGetQueryItemsHandler
+    public class EbayGetItemsQueryHandler
     {
         public class Query : IRequest<Result<IList<EbayProductItem>>>
         {

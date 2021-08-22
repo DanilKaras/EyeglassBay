@@ -40,6 +40,7 @@ namespace EyeglassBay.Api.Controllers
             var result = await Mediator.Send(command, cancellationToken);
             return HandleResult(result);
         }
+        
         [HttpPut("{id}")]
         public async Task<IActionResult> EditEyeGlass(Guid id, EyeGlass eyeGlass, CancellationToken cancellationToken)
         {
