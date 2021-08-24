@@ -1,6 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using EyeglassBay.Application.Handlers;
+using EyeglassBay.Domain.DTOs;
 using EyeglassBay.Domain.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -17,18 +18,24 @@ namespace EyeglassBay.Api.Controllers
             
         }
         
-        [HttpGet("{searchString}")]
-        public async Task<ActionResult<EbayProductItem>> GetItems(string searchString, CancellationToken cancellationToken)
+        [HttpGet]
+        public async Task<ActionResult<EbayProductItem>> GetItems([FromQuery]EbayRequestDto search, CancellationToken cancellationToken)
         {
-            var query = new EbayGetItemsQueryHandler.Query { SearchString = searchString };
+            var query = new EbayGetItemsQueryHandler.Query
+            {
+                EbayRequest = search
+            };
             var result = await Mediator.Send(query, cancellationToken);
             return HandleResult(result);
         }
         
-        [HttpGet("min/{searchString}")]
-        public async Task<ActionResult<EbayProductItem>> GetMinItem(string searchString, CancellationToken cancellationToken)
+        [HttpGet("min")]
+        public async Task<ActionResult<EbayProductItem>> GetMinItem([FromQuery]EbayRequestDto search, CancellationToken cancellationToken)
         {
-            var query = new EbayGetMinPriceItemQueryHandler.Query { SearchString = searchString };
+            var query = new EbayGetMinPriceItemQueryHandler.Query 
+            {
+                EbayRequest = search
+            };
             var result = await Mediator.Send(query, cancellationToken);
             return HandleResult(result);
         }

@@ -9,7 +9,7 @@ const NavBar = () => {
         <Menu inverted fixed='top'>
             <Container>
                 <Menu.Item as={NavLink} to='/' exact header>
-                    <img src={'/eye-glasses.png'} alt="logo" style={{marginRight: '10px'}}/>
+                    <img src={'/eye-glasses.png'} alt="logo" />
                 </Menu.Item>
                 <Menu.Item as={NavLink} to={'/search'} name={'Search'} />
                 <Menu.Item as={NavLink} to={'/eyeglasses'} name='Eye Glasses'/>

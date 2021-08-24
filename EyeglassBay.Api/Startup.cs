@@ -25,13 +25,13 @@ namespace EyeglassBay.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers(opt => 
+            services.AddControllers(opt =>
             {
                 var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
                 opt.Filters.Add(new AuthorizeFilter(policy));
             }).AddFluentValidation(config =>
             {
-                config.RegisterValidatorsFromAssemblyContaining<EyeGlassCreateCommandHandler>();
+                config.RegisterValidatorsFromAssemblyContaining<EbayGetItemsQueryHandler>();
             });
             services.AddApplicationServices(_config);
             services.AddIdentityServices(_config);

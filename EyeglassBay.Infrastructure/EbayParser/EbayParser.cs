@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using EyeglassBay.Domain.DTOs;
 using EyeglassBay.Domain.Models;
 using EyeglassBay.Infrastructure.Models;
 using HtmlAgilityPack;
@@ -23,7 +24,7 @@ namespace EyeglassBay.Infrastructure.EbayParser
             _configuration = configuration;
         }
 
-        public async Task<EbayProductItem> GetMinPricedItemAsync(string request)
+        public async Task<EbayProductItem> GetMinPricedItemAsync(EbayRequestDto request)
         {
             var items = await GetItemsAsync(request);
 
@@ -33,11 +34,11 @@ namespace EyeglassBay.Infrastructure.EbayParser
             {
                 return await GetItemLowestPriced(ebayItems[0]);
             }
-
+            
             return await GetItemLowestPricedFromList(ebayItems);
         }
 
-        public async Task<IList<EbayProductItem>> GetItemsAsync(string request)
+        public async Task<IList<EbayProductItem>> GetItemsAsync(EbayRequestDto request)
         {
             var result = new List<EbayProductItem>();
 
@@ -47,7 +48,7 @@ namespace EyeglassBay.Infrastructure.EbayParser
             
             if (string.IsNullOrEmpty(baseUrl)) return result;
             
-            var url = string.Format(baseUrl, itemsPerPage, request, pageNumber);
+            var url = string.Format(baseUrl, itemsPerPage, request.SearchString, pageNumber);
 
             var doc = await GetHtmlDocument(url);
 
@@ -67,11 +68,15 @@ namespace EyeglassBay.Infrastructure.EbayParser
                 var price = GetPrice(item);
                 var logistic = GetLogistics(item);
                 var itemUrl = GetItemUrl(item);
-
-                var ebayItem = CreateItem(productName, price, itemUrl);
+                var itemImage = GetItemImage(item);
+                var ebayItem = CreateItem(productName, price, itemUrl, itemImage);
                 GetLogisticCost(logistic, ebayItem);
                 CalculateTotalPrice(ebayItem);
-
+                await GetShopName(ebayItem);
+                if (ebayItem.IsMyShop)
+                {
+                    CalculateProfit(ebayItem, request.OriginalPrice, request.Percentage);
+                }
                 result.Add(ebayItem);
                 if (result.Count == count) break;
             }
@@ -93,7 +98,7 @@ namespace EyeglassBay.Infrastructure.EbayParser
                         ebayItem.IsDeliveryNotSpecified = true;
                         break;
                     default:
-                        var price = logistic.Split(" ", StringSplitOptions.RemoveEmptyEntries)?.FirstOrDefault();
+                        var price = logistic.Split(" ", StringSplitOptions.RemoveEmptyEntries).FirstOrDefault();
                         var indexOf = price?.IndexOf("$");
                         if (!indexOf.HasValue || indexOf < 0) break;
 
@@ -119,14 +124,14 @@ namespace EyeglassBay.Infrastructure.EbayParser
                 ?.InnerHtml;
 
             var myShopName = _configuration["Ebay:ShopName"];
-            ebayItem.ShopName = myShopName;
+            ebayItem.ShopName = shopName;
             if (shopName != null && shopName.ToLower().Equals(myShopName.ToLower()))
             {
                 ebayItem.IsMyShop = true;
             }
         }
 
-        private EbayProductItem CreateItem(string productName, string price, string itemUrl)
+        private EbayProductItem CreateItem(string productName, string price, string itemUrl, string itemImage)
         {
             var splitPrice = price?.Replace("$", "").Split(" ", StringSplitOptions.RemoveEmptyEntries).FirstOrDefault();
 
@@ -145,7 +150,7 @@ namespace EyeglassBay.Infrastructure.EbayParser
                 _logger.LogError(ex, $"Couldn't convert decimal {splitPrice}");
             }
 
-            return new EbayProductItem {Price = priceDecimal, ProductName = productName, Url = itemUrl};
+            return new EbayProductItem {Price = priceDecimal, ProductName = productName, Url = itemUrl, Image = itemImage};
         }
 
         private string GetSponsoredTargetStyle(HtmlDocument doc)
@@ -228,8 +233,15 @@ namespace EyeglassBay.Infrastructure.EbayParser
         private string GetItemUrl(HtmlNode item)
         {
             return item.SelectSingleNode(
-                    @".//*[contains(concat("" "",normalize-space(@class),"" ""),"" s-item__info "")]//a")
+                    @".//*[contains(concat("" "",normalize-space(@class),"" ""),"" s-item__info "")]//a")?
                 .GetAttributeValue("href", "");
+        }
+
+        private string GetItemImage(HtmlNode item)
+        {
+            return item.SelectSingleNode(
+                    @".//*[contains(concat("" "",normalize-space(@class),"" ""),"" s-item__image-img "")]")?
+                .GetAttributeValue("src", "");
         }
 
         private async Task<EbayProductItem> GetItemLowestPriced(EbayProductItem item)
@@ -240,8 +252,8 @@ namespace EyeglassBay.Infrastructure.EbayParser
 
         private IList<EbayProductItem> GetItemsOrderedByPrice(IList<EbayProductItem> items)
         {
-            var minPrice = items.Min(x => x.Price);
-            var ebayItems = items.OrderBy(x => x.Price).Where(x => x.Price == minPrice).ToList();
+            var minPrice = items.Min(x => x.TotalPrice);
+            var ebayItems = items.OrderBy(x => x.TotalPrice).Where(x => x.TotalPrice == minPrice).ToList();
             return ebayItems;
         }
 
@@ -258,8 +270,15 @@ namespace EyeglassBay.Infrastructure.EbayParser
 
                 compareShops.Add(ebayItem);
             }
-
             return compareShops.FirstOrDefault();
         }
+
+        private void CalculateProfit(EbayProductItem item, decimal buyingPrice, int percentage)
+        {
+            var priceWithNoCommission = item.TotalPrice * (decimal)0.83 -5;
+            var clearPrice = buyingPrice * (1 - (decimal)percentage / 100);
+            item.Profit = decimal.Round(priceWithNoCommission - clearPrice, 2);
+        }
+        
     }
 }
