@@ -1,34 +1,69 @@
 import {observer} from "mobx-react-lite";
-import {Grid, Form, Button, Select, Input, Card, Image, Segment, Item, Label, Icon} from 'semantic-ui-react'
+import {Grid, Form, Item, Label, Icon, Button, Divider, Header} from 'semantic-ui-react'
+import { ErrorMessage, Formik } from "formik";
+import MyTextInput from "../../app/common/form/MyTextInput";
+import { useStore } from "../../app/stores/store";
+import * as Yup from 'yup';
+import {useState} from "react";
+import {EbayProductItem, EbayRequest} from "../../app/models/ebaySearchRequest";
 
 const Search = () => {
+    const { ebayParserStore } = useStore();
+    const {getAllItemByRequest, getMinItemByRequest} = ebayParserStore;
+    const [ebayRequest, setEbayRequest] = useState<EbayRequest>(
+        {
+            searchString: '', 
+            originalPrice: 0, 
+            coefficient: 0
+        } as EbayRequest);
+
+    const validationSchema = Yup.object({
+        searchString: Yup.string().required('The search string is required'),
+        originalPrice: Yup.number().required('Price is required').moreThan(0),
+        coefficient: Yup.number().required('Coefficient is required').moreThan(0)
+    })
+    
+    const handleFormSubmit = async (request: EbayRequest) => {
+        debugger;
+        await getMinItemByRequest(request);
+    }
+    
     return (
         <>
         <Grid centered>
             <Grid.Row>
                 <Grid.Column width={16}>
-                    <Form>
-                        <Form.Group widths='equal'>
-                            <Form.Input
-                                width={10}
-                                placeholder='Search'
-                                name='search'
-                            />
-                            <Form.Input
-                                width={4}
-                                placeholder='Price'
-                                name='price'
-                            />
-                            <Form.Input
-                                width={4}
-                                placeholder='Coefficient'
-                                name='Coefficient'
-                            />
-                            <Form.Button content='Submit' color={'green'} />
-                        </Form.Group>
-                    </Form>
+                    <Formik
+                        validationSchema={validationSchema}
+                        enableReinitialize
+                        initialValues={ebayRequest}
+                        onSubmit={(values: EbayRequest) => handleFormSubmit(values)}
+                    >
+                        {({ handleSubmit, isValid, isSubmitting, errors, dirty}) => (
+                        <Form onSubmit={handleSubmit} autoComplete='off'>
+                            <Form.Group widths='equal'>
+                                <MyTextInput name={'searchString'} placeholder={'Search'} type={'text'} width={10}/>
+                                <MyTextInput name={'originalPrice'} placeholder={'Price'} type={'number'} width={4}/>
+                                <MyTextInput name={'coefficient'} placeholder={'Coefficient'} type={'number'} width={4}/>
+                            </Form.Group>
+                            <Button
+                                disabled={isSubmitting || !dirty || !isValid}
+                                loading={isSubmitting}
+                                positive
+                                type='submit'
+                                floated={'right'}
+                                content='Submit' />
+                        </Form>
+                        )}
+                    </Formik>
                 </Grid.Column>
             </Grid.Row>
+            <Divider horizontal>
+                <Header as='h4'>
+                    <Icon name='tag' />
+                    Eyeglasses
+                </Header>
+            </Divider>
             <Grid.Row>
                 <Grid.Column width={16}>
                     <Item.Group>

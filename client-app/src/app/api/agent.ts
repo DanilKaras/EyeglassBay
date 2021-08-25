@@ -4,6 +4,7 @@ import {toast} from "react-toastify";
 import {history} from '../../index';
 import {store} from "../stores/store";
 import {User, UserFormValues} from "../models/user";
+import {EbayProductItem, EbayRequest} from "../models/ebaySearchRequest";
 axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
 axios.interceptors.request.use(config => {
@@ -50,16 +51,11 @@ axios.interceptors.response.use(async response => {
     return Promise.reject(error);
 });
 
-
-const Account ={
-    current: () => request.get<User>('/account'),
-    login: (user: UserFormValues) => request.post<User>('/account/login', user)
-}
-
 const responseBody = <T>(response: AxiosResponse<T>) => response.data;
 
 const request = {
     get: <T> (url: string) => axios.get<T>(url).then(responseBody),
+    getParams: <T>(url:string, query: {}) => axios.get<T>(url, query).then(responseBody),
     post:<T> (url: string, body: {}) => axios.post<T>(url, body).then(responseBody),
     put: <T> (url: string, body: {}) => axios.put<T>(url, body).then(responseBody),
     del: <T> (url: string) => axios.delete<T>(url).then(responseBody),
@@ -73,9 +69,32 @@ const EyeGlasses = {
     delete: (id: string) => request.del<void>(`/EyeGlasses/${id}`),
 }
 
+const Account = {
+    current: () => request.get<User>('/account'),
+    login: (user: UserFormValues) => request.post<User>('/account/login', user)
+}
+
+const EbayParser = {
+    getItems: (ebayRequest: EbayRequest) => request.getParams<EbayProductItem[]>(`/EbaySearch`, {
+        params: {
+            searchString: ebayRequest.searchString, 
+            originalPrice: ebayRequest.originalPrice,
+            coefficient: ebayRequest.coefficient
+        }
+    }),
+    getMinItem: (ebayRequest: EbayRequest) => request.getParams<EbayProductItem>(`/EbaySearch/min`, {
+        params: {
+            searchString: ebayRequest.searchString,
+            originalPrice: ebayRequest.originalPrice,
+            coefficient: ebayRequest.coefficient
+        }
+    }),
+}
+    
 const agent = {
     EyeGlasses, 
-    Account
+    Account,
+    EbayParser
 }
 
 export default agent;

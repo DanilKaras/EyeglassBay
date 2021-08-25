@@ -75,7 +75,7 @@ namespace EyeglassBay.Infrastructure.EbayParser
                 await GetShopName(ebayItem);
                 if (ebayItem.IsMyShop)
                 {
-                    CalculateProfit(ebayItem, request.OriginalPrice, request.Percentage);
+                    CalculateProfit(ebayItem, request.OriginalPrice, request.Coefficient);
                 }
                 result.Add(ebayItem);
                 if (result.Count == count) break;

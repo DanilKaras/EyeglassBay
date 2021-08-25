@@ -9,7 +9,7 @@ namespace EyeglassBay.Application.Handlers.Validators
         {
             RuleFor(x => x.SearchString).NotEmpty();
             RuleFor(x => x.OriginalPrice).GreaterThanOrEqualTo(0);
-            RuleFor(x => x.Percentage).GreaterThanOrEqualTo(0);
+            RuleFor(x => x.Coefficient).GreaterThanOrEqualTo(0);
         }
     }
 }

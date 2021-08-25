@@ -3,19 +3,22 @@ import {createContext, useContext} from "react";
 import CommonStore from "./commonStore";
 import UserStore from "./userStore";
 import ModalStore from "./modalStore";
+import EbayParserStore from "./ebayParserStore";
 
 interface Store{
     eyeglassStore: EyeglassStore;
     commonStore: CommonStore;
     userStore: UserStore;
     modalStore: ModalStore;
+    ebayParserStore: EbayParserStore
 }
 
 export const store: Store = {
     eyeglassStore: new EyeglassStore(),
     commonStore: new CommonStore(),
     userStore: new UserStore(),
-    modalStore: new ModalStore()
+    modalStore: new ModalStore(),
+    ebayParserStore: new EbayParserStore()
 }
 
 export const StoreContext = createContext(store);
