@@ -53,17 +53,17 @@ namespace EyeglassBay.Infrastructure.EbayParser
             var doc = await GetHtmlDocument(url);
 
             var targetStyleClass = GetSponsoredTargetStyle(doc);
-
+            
             var productsHtml = GetAllItems(doc);
             if (productsHtml.Count == 0) return new List<EbayProductItem>();
-
+            
             var count = GetItemsCount(doc);
             if (count == default) return new List<EbayProductItem>();
-
+            
             foreach (var item in productsHtml)
             {
                 if (item.InnerHtml.Contains(targetStyleClass)) continue;
-
+            
                 var productName = GetProductName(item);
                 var price = GetPrice(item);
                 var logistic = GetLogistics(item);
