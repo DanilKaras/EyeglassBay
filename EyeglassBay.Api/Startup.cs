@@ -70,7 +70,8 @@ namespace EyeglassBay.Api
                     .CustomSources(
                         "sha256-8cif3HVcZMQmz002SNt8xTuOGlfdcERoEg6QGIhyEXk=",
                         "sha256-Tui7QoFlnLXkJCSl1/JvEZdIXTmBttnWNxzJpXomQjg=",
-                        "sha256-Tj9wVjD6J24cRQ8weyZ9hFZG0TLwgAk4Y++rUjhiuH8="
+                        "sha256-Tj9wVjD6J24cRQ8weyZ9hFZG0TLwgAk4Y++rUjhiuH8=",
+                        "sha256-FngeDhA+Rc8sWEhF1lQCW84nZF4HRpZ3Xttt11f79ac="
                     ))
             );
             

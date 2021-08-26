@@ -13,7 +13,7 @@ import DocumentUpload from "../../features/document/DocumentUpload";
 import TestErrors from '../../features/errors/TestError';
 import ServerError from '../../features/errors/ServerError';
 import NotFound from '../../features/errors/NotFound';
-import Search from '../../features/search/Search';
+import Search from '../../features/search/search';
 import {ToastContainer} from "react-toastify";
 
 function App() {

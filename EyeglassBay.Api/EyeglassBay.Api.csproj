@@ -60,6 +60,8 @@
       <_ContentIncludedByDefault Remove="wwwroot\static\media\outline-icons.9c4845b4.svg" />
       <_ContentIncludedByDefault Remove="wwwroot\static\media\outline-icons.ddae9b1b.woff" />
       <_ContentIncludedByDefault Remove="wwwroot\user.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\static\js\main.322f3ccb.chunk.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\static\js\main.322f3ccb.chunk.js.map" />
     </ItemGroup>
 
 </Project>
