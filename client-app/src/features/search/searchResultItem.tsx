@@ -24,7 +24,7 @@ const SearchResultItem = ({item}: Props) => {
                     <Item.Meta>
                         <Label color={'teal'}>
                             <Icon name='money' /> {item.totalPrice} $
-                            <Label.Detail>{item.isDiscounted ? `Discount is ${item.discount} $` : 'No Discount'}</Label.Detail>
+                            <Label.Detail>{item.isDiscounted ? `Discount is ${item.discount} %` : 'No Discount'}</Label.Detail>
                         </Label>
                         </Item.Meta>
                     <Item.Description>
