@@ -16,4 +16,7 @@ export interface EbayProductItem{
     isMyShop: boolean;
     totalPrice: number;
     profit: number;
+    isDiscounted: boolean;
+    discount: number | null;
+    priceNoDiscount: number | null;
 }

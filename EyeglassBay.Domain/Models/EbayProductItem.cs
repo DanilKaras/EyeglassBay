@@ -13,5 +13,8 @@ namespace EyeglassBay.Domain.Models
         public bool IsMyShop { get; set; }
         public decimal TotalPrice { get; set; }
         public decimal Profit { get; set; }
+        public bool IsDiscounted => IsMyShop && Discount.HasValue;
+        public decimal? Discount { get; set; }  
+        public decimal? PriceNoDiscount { get; set; }
     }
 }

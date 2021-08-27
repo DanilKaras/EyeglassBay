@@ -43,7 +43,9 @@ namespace EyeglassBay.Infrastructure.EbayParser
             var result = new List<EbayProductItem>();
 
             const int pageNumber = 1;
-            var itemsPerPage = int.Parse(_configuration["Ebay:ItemsPerPage"]);
+            
+            if (!int.TryParse(_configuration["Ebay:ItemsPerPage"], out var itemsPerPage)) return result;
+            
             var baseUrl = _configuration["Ebay:BaseUrl"];
             
             if (string.IsNullOrEmpty(baseUrl)) return result;
@@ -60,23 +62,10 @@ namespace EyeglassBay.Infrastructure.EbayParser
             var count = GetItemsCount(doc);
             if (count == default) return new List<EbayProductItem>();
             
-            foreach (var item in productsHtml)
+            foreach (var node in productsHtml)
             {
-                if (item.InnerHtml.Contains(targetStyleClass)) continue;
-            
-                var productName = GetProductName(item);
-                var price = GetPrice(item);
-                var logistic = GetLogistics(item);
-                var itemUrl = GetItemUrl(item);
-                var itemImage = GetItemImage(item);
-                var ebayItem = CreateItem(productName, price, itemUrl, itemImage);
-                GetLogisticCost(logistic, ebayItem);
-                CalculateTotalPrice(ebayItem);
-                await GetShopName(ebayItem);
-                if (ebayItem.IsMyShop)
-                {
-                    CalculateProfit(ebayItem, request.OriginalPrice, request.Coefficient);
-                }
+                if (node.InnerHtml.Contains(targetStyleClass)) continue;
+                var ebayItem = await CollectDataForEbayItem(node, request);
                 result.Add(ebayItem);
                 if (result.Count == count) break;
             }
@@ -84,6 +73,44 @@ namespace EyeglassBay.Infrastructure.EbayParser
             return result;
         }
 
+
+        private async Task <EbayProductItem> CollectDataForEbayItem(HtmlNode item, EbayRequestDto request)
+        {
+            var productName = GetProductName(item);
+            var price = GetPrice(item);
+            var logistic = GetLogistics(item);
+            var itemUrl = GetItemUrl(item);
+            var itemImage = GetItemImage(item);
+            var itemDiscount = GetItemDiscount(item);
+            var itemPriceWithNoDiscount = string.Empty;
+            if (!string.IsNullOrEmpty(itemDiscount))
+            {
+                itemPriceWithNoDiscount = GetItemPriceWithNoDiscount(item);
+            }
+            var ebayItem = CreateItem(productName, price, itemUrl, itemImage);
+            GetLogisticCost(logistic, ebayItem);
+            GetDiscount(itemDiscount, itemPriceWithNoDiscount, ebayItem);
+            CalculateTotalPrice(ebayItem);
+            await GetShopName(ebayItem);
+            if (ebayItem.IsMyShop)
+            {
+                CalculateProfit(ebayItem, request.OriginalPrice, request.Coefficient);
+            }
+
+            return ebayItem;
+        }
+        
+        private void GetDiscount(string discountString, string priceWithNoDiscountString, EbayProductItem ebayItem)
+        {
+            if (string.IsNullOrEmpty(discountString)) return;
+            if (!decimal.TryParse(discountString.TrimEnd('%', ' '), out var discount)) return;
+            ebayItem.Discount = discount;
+            if (decimal.TryParse(priceWithNoDiscountString.TrimStart('$', ' '), out var price))
+            {
+                ebayItem.PriceNoDiscount = price;
+            }
+        }
+        
         private void GetLogisticCost(string logistic, EbayProductItem ebayItem)
         {
             if (string.IsNullOrEmpty(logistic)) return;
@@ -244,6 +271,25 @@ namespace EyeglassBay.Infrastructure.EbayParser
                 .GetAttributeValue("src", "");
         }
 
+        private string GetItemDiscount(HtmlNode item)
+        {
+            var discountInnerText = item.SelectSingleNode(
+                    @".//*[contains(concat("" "",normalize-space(@class),"" ""),"" s-item__info "")]//*[contains(concat("" "",normalize-space(@class),"" ""),"" s-item__discount "")]")
+                ?.InnerText;
+            if (string.IsNullOrEmpty(discountInnerText)) return string.Empty;
+            var discountString = discountInnerText.Split(' ', StringSplitOptions.TrimEntries).FirstOrDefault();
+            return discountString;
+        }
+
+        private string GetItemPriceWithNoDiscount(HtmlNode item)
+        {
+            var priceInnerText = item.SelectSingleNode(
+                    @".//*[contains(concat("" "",normalize-space(@class),"" ""),"" s-item__info "")]//*[contains(concat("" "",normalize-space(@class),"" ""),"" s-item__trending-price "")]//*[contains(concat("" "",normalize-space(@class),"" ""),"" STRIKETHROUGH "")]")
+                ?.InnerText;
+            if (string.IsNullOrEmpty(priceInnerText)) return string.Empty;
+            return priceInnerText;
+        }
+        
         private async Task<EbayProductItem> GetItemLowestPriced(EbayProductItem item)
         {
             await GetShopName(item);
@@ -275,10 +321,33 @@ namespace EyeglassBay.Infrastructure.EbayParser
 
         private void CalculateProfit(EbayProductItem item, decimal buyingPrice, int percentage)
         {
+            try
+            {
+                var result = item.IsDiscounted 
+                    ? CalculateProfitForDiscountedItem(item, buyingPrice, percentage) 
+                    : CalculateProfitForNonDiscountedItem(item, buyingPrice, percentage);
+                item.Profit = result;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, e.Message);
+                throw;
+            }
+        }
+
+        private decimal CalculateProfitForDiscountedItem(EbayProductItem item, decimal buyingPrice, int percentage)
+        {
             var priceWithNoCommission = item.TotalPrice * (decimal)0.83 -5;
             var clearPrice = buyingPrice * (1 - (decimal)percentage / 100);
-            item.Profit = decimal.Round(priceWithNoCommission - clearPrice, 2);
+            return decimal.Round(priceWithNoCommission - clearPrice, 2);
         }
         
+        private decimal CalculateProfitForNonDiscountedItem(EbayProductItem item, decimal buyingPrice, int percentage)
+        {
+            var priceRemoveAmountWhenNoDiscount = item.TotalPrice * (decimal) 0.87;
+            var priceWithNoCommission = priceRemoveAmountWhenNoDiscount * (decimal) 0.83 -5;
+            var clearPrice = buyingPrice * (1 - (decimal)percentage / 100);
+            return decimal.Round(priceWithNoCommission - clearPrice, 2);
+        }
     }
 }

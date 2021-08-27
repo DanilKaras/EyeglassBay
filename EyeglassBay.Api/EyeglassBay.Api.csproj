@@ -62,6 +62,21 @@
       <_ContentIncludedByDefault Remove="wwwroot\user.png" />
       <_ContentIncludedByDefault Remove="wwwroot\static\js\main.322f3ccb.chunk.js" />
       <_ContentIncludedByDefault Remove="wwwroot\static\js\main.322f3ccb.chunk.js.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\static\css\main.5fa233d5.chunk.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\static\css\main.5fa233d5.chunk.css.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\static\js\2.a0711b6d.chunk.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\static\js\2.a0711b6d.chunk.js.LICENSE.txt" />
+      <_ContentIncludedByDefault Remove="wwwroot\static\js\2.a0711b6d.chunk.js.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\static\js\3.ec0a7d61.chunk.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\static\js\3.ec0a7d61.chunk.js.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\static\js\main.04e81c16.chunk.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\static\js\main.04e81c16.chunk.js.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\static\js\runtime-main.00edaff8.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\static\js\runtime-main.00edaff8.js.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\static\js\main.9e4fa82b.chunk.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\static\js\main.9e4fa82b.chunk.js.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\static\js\main.ddf5a072.chunk.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\static\js\main.ddf5a072.chunk.js.map" />
     </ItemGroup>
 
 </Project>

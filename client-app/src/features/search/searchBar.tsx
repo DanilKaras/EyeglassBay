@@ -18,8 +18,8 @@ const SearchBar = () => {
 
     const validationSchema = Yup.object({
         searchString: Yup.string().required('The search string is required'),
-        originalPrice: Yup.number().required('Price is required').moreThan(0, 'Price must be greater than 0'),
-        coefficient: Yup.number().required('Coefficient is required').moreThan(0, 'Coefficient must be greater than 0')
+        originalPrice: Yup.number().typeError('Number is required').required('Price is required').moreThan(0, 'Price must be greater than 0'),
+        coefficient: Yup.number().typeError('Number is required').required('Coefficient is required').moreThan(0, 'Coefficient must be greater than 0')
     })
 
     const handleFormSubmit = async (request: EbayRequest) => {
@@ -37,8 +37,8 @@ const SearchBar = () => {
                     <Form onSubmit={handleSubmit} autoComplete='off'>
                         <Form.Group widths='equal'>
                             <MyTextInput name={'searchString'} placeholder={'Search'} type={'text'} width={10}/>
-                            <MyTextInput name={'originalPrice'} placeholder={'Price'} type={'number'} width={4}/>
-                            <MyTextInput name={'coefficient'} placeholder={'Coefficient'} type={'number'} width={4} />
+                            <MyTextInput name={'originalPrice'} placeholder={'Price'} type={'text'} width={4} />
+                            <MyTextInput name={'coefficient'} placeholder={'Coefficient'} type={'text'} width={4} />
                         </Form.Group>
                         <Button
                             disabled={ebayParserStore.loading || isSubmitting || !dirty || !isValid}

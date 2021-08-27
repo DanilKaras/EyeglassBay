@@ -10,7 +10,7 @@ const SearchResultItem = ({item}: Props) => {
     return (
             <Item>
                 <Item.Image
-                    fluid
+                    size='small'
                     label={item.isMyShop && {
                         color: 'green',
                         corner: 'left',
@@ -21,9 +21,14 @@ const SearchResultItem = ({item}: Props) => {
                 />
                 <Item.Content>
                     <Item.Header>{item.productName}</Item.Header>
-                    <Item.Meta><span>$ {item.totalPrice}</span></Item.Meta>
+                    <Item.Meta>
+                        <Label color={'teal'}>
+                            <Icon name='money' /> {item.totalPrice} $
+                            <Label.Detail>{item.isDiscounted ? `Discount is ${item.discount} $` : 'No Discount'}</Label.Detail>
+                        </Label>
+                        </Item.Meta>
                     <Item.Description>
-                        <span>Seller: <b>{item.shopName}</b></span>
+                        <span>Seller: <b>{item.shopName}</b></span>  {item.isDiscounted &&  <span> | Price with no discount: <b>{item.priceNoDiscount} $</b> </span>   }
                     </Item.Description>
                     <Item.Extra>
                         <Label as='a'

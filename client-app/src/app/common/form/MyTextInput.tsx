@@ -7,6 +7,7 @@ interface Props{
     type?: string;
     label?: string;
     width?: SemanticWIDTHS | undefined;
+    step?: number | undefined;
 }
 const MyTextInput = (props: Props) => {
     const [field, meta] = useField(props.name);
