@@ -92,10 +92,9 @@ namespace EyeglassBay.Infrastructure.EbayParser
             GetDiscount(itemDiscount, itemPriceWithNoDiscount, ebayItem);
             CalculateTotalPrice(ebayItem);
             await GetShopName(ebayItem);
-            if (ebayItem.IsMyShop)
-            {
-                CalculateProfit(ebayItem, request.OriginalPrice, request.Coefficient);
-            }
+
+            CalculateProfit(ebayItem, request.OriginalPrice, request.Coefficient);
+
 
             return ebayItem;
         }
@@ -323,9 +322,17 @@ namespace EyeglassBay.Infrastructure.EbayParser
         {
             try
             {
-                var result = item.IsDiscounted 
-                    ? CalculateProfitForDiscountedItem(item, buyingPrice, percentage) 
-                    : CalculateProfitForNonDiscountedItem(item, buyingPrice, percentage);
+                decimal result;
+                if (item.IsMyShop)
+                {
+                    result = item.IsDiscounted 
+                        ? CalculateProfitForDiscountedItem(item, buyingPrice, percentage) 
+                        : CalculateProfitForNonDiscountedItem(item, buyingPrice, percentage);
+                }
+                else
+                {
+                    result = CalculateProfitForDiscountedItem(item, buyingPrice, percentage);
+                }
                 item.Profit = result;
             }
             catch (Exception e)

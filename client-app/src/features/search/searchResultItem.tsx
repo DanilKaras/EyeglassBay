@@ -23,12 +23,15 @@ const SearchResultItem = ({item}: Props) => {
                     <Item.Header>{item.productName}</Item.Header>
                     <Item.Meta>
                         <Label color={'teal'}>
-                            <Icon name='money' /> {item.totalPrice} $
+                            <Icon name='money' /> {item.price} $
                             <Label.Detail>{item.isDiscounted ? `Discount is ${item.discount} %` : 'No Discount'}</Label.Detail>
                         </Label>
                         </Item.Meta>
                     <Item.Description>
-                        <span>Seller: <b>{item.shopName}</b></span>  {item.isDiscounted &&  <span> | Price with no discount: <b>{item.priceNoDiscount} $</b> </span>   }
+                        <span>Seller: <b>{item.shopName}</b></span>  
+                        {item.isDiscounted &&  <span> | Price with no discount: <b>{item.priceNoDiscount} $</b> </span>}
+                        {(!item.isFreeDelivery || item.isDeliveryNotSpecified) && (<span> | Delivery: <b>{item.deliveryPrice || 'No specified'} $</b> </span>)}
+                        <span> | Total Price <b>{item.totalPrice} $</b></span>
                     </Item.Description>
                     <Item.Extra>
                         <Label as='a'
@@ -37,10 +40,9 @@ const SearchResultItem = ({item}: Props) => {
                                target={'_blank'}>
                             <Icon name={'globe'}/> Visit Page
                         </Label>
-                        {item.isMyShop &&
                         <Label color={item.profit > 0 ? 'green' : 'red'}>
                             <Icon name='money'/> Profit $ {item.profit}
-                        </Label>}
+                        </Label>
                     </Item.Extra>
                 </Item.Content>
             </Item>
