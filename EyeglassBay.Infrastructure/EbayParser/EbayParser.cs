@@ -40,37 +40,45 @@ namespace EyeglassBay.Infrastructure.EbayParser
 
         public async Task<IList<EbayProductItem>> GetItemsAsync(EbayRequestDto request)
         {
-            var result = new List<EbayProductItem>();
-
-            const int pageNumber = 1;
-            
-            if (!int.TryParse(_configuration["Ebay:ItemsPerPage"], out var itemsPerPage)) return result;
-            
-            var baseUrl = _configuration["Ebay:BaseUrl"];
-            
-            if (string.IsNullOrEmpty(baseUrl)) return result;
-            
-            var url = string.Format(baseUrl, itemsPerPage, request.SearchString, pageNumber);
-
-            var doc = await GetHtmlDocument(url);
-
-            var targetStyleClass = GetSponsoredTargetStyle(doc);
-            
-            var productsHtml = GetAllItems(doc);
-            if (productsHtml.Count == 0) return new List<EbayProductItem>();
-            
-            var count = GetItemsCount(doc);
-            if (count == default) return new List<EbayProductItem>();
-            
-            foreach (var node in productsHtml)
+            try
             {
-                if (node.InnerHtml.Contains(targetStyleClass)) continue;
-                var ebayItem = await CollectDataForEbayItem(node, request);
-                result.Add(ebayItem);
-                if (result.Count == count) break;
-            }
+                var result = new List<EbayProductItem>();
 
-            return result;
+                const int pageNumber = 1;
+
+                if (!int.TryParse(_configuration["Ebay:ItemsPerPage"], out var itemsPerPage)) return result;
+
+                var baseUrl = _configuration["Ebay:BaseUrl"];
+
+                if (string.IsNullOrEmpty(baseUrl)) return result;
+
+                var url = string.Format(baseUrl, itemsPerPage, request.SearchString, pageNumber);
+
+                var doc = await GetHtmlDocument(url);
+
+                var targetStyleClass = GetSponsoredTargetStyle(doc);
+
+                var productsHtml = GetAllItems(doc);
+                if (productsHtml.Count == 0) return new List<EbayProductItem>();
+
+                var count = GetItemsCount(doc);
+                if (count == default) return new List<EbayProductItem>();
+
+                foreach (var node in productsHtml)
+                {
+                    if (node.InnerHtml.Contains(targetStyleClass)) continue;
+                    var ebayItem = await CollectDataForEbayItem(node, request);
+                    result.Add(ebayItem);
+                    if (result.Count == count) break;
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                throw;
+            }
         }
 
 
@@ -211,6 +219,7 @@ namespace EyeglassBay.Infrastructure.EbayParser
         private async Task<HtmlDocument> GetHtmlDocument(string url)
         {
             var httpClient = new HttpClient();
+            httpClient.Timeout = TimeSpan.FromMinutes(10);
             var html = await httpClient.GetStringAsync(url);
 
             var doc = new HtmlDocument();
