@@ -1,4 +1,4 @@
 dotnet ef migrations add IdentityAdded -p EyeglassBay.Persistence -s EyeglassBay.Api
 
 
-git push heroku origin
+git push heroku main
