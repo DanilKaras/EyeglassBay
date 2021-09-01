@@ -22,7 +22,7 @@ const Search = () => {
                 progress: undefined,
             });
         }
-    }, [ebayItems, loading])
+    }, [ebayItems])
     return (
         <>
             <Grid centered>
@@ -34,7 +34,7 @@ const Search = () => {
                 <Divider horizontal>
                     <Header as='h4'>
                         <Icon name='tag'/>
-                        Eyeglasses. Number of items: { !loading ? ebayItems?.length || '' : 0}
+                        Eyeglasses. Number of items: { !loading ? ebayItems?.length || 0 : 0}
                     </Header>
                 </Divider>
                 <Grid.Row>
