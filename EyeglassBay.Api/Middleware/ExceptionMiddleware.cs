@@ -45,6 +45,10 @@ namespace EyeglassBay.Api.Middleware
 
                     var option = new JsonSerializerOptions {PropertyNamingPolicy = JsonNamingPolicy.CamelCase};
                     var json = JsonSerializer.Serialize(response, option);
+                    if (string.IsNullOrEmpty(json))
+                    {
+                        json = "Something bad and unknown happened";
+                    }
                     await context.Response.WriteAsync(json);
                 }
             }

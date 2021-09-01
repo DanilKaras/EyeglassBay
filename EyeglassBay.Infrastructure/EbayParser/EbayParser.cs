@@ -54,7 +54,17 @@ namespace EyeglassBay.Infrastructure.EbayParser
 
                 var url = string.Format(baseUrl, itemsPerPage, request.SearchString, pageNumber);
 
-                var doc = await GetHtmlDocument(url);
+                HtmlDocument doc;
+                try
+                {
+                    doc = await GetHtmlDocument(url);
+                }
+                catch (Exception)
+                {
+                    var message = $"Couldn't execute the request for URL: {url}";
+                    _logger.LogError(message);
+                    throw;
+                }
 
                 var targetStyleClass = GetSponsoredTargetStyle(doc);
 
