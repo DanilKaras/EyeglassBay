@@ -4,10 +4,25 @@ import {useStore} from "../../app/stores/store";
 import SearchPlaceholder from "./searchPlaceholder";
 import SearchBar from "./searchBar";
 import SearchResultItem from "./searchResultItem";
+import {useEffect} from "react";
+import {toast} from "react-toastify";
 
 const Search = () => {
-    const {ebayParserStore} = useStore();
-
+    const { ebayParserStore } = useStore();
+    const { ebayItems, loading } = ebayParserStore;
+    useEffect(() => {
+        if(ebayItems.length === 0){
+            toast.warn('Server Error or No Items. Please run the search again.', {
+                position: "bottom-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+        }
+    }, [ebayItems, loading])
     return (
         <>
             <Grid centered>
@@ -19,16 +34,16 @@ const Search = () => {
                 <Divider horizontal>
                     <Header as='h4'>
                         <Icon name='tag'/>
-                        Eyeglasses
+                        Eyeglasses. Number of items: { !loading ? ebayItems?.length || '' : 0}
                     </Header>
                 </Divider>
                 <Grid.Row>
                     <Grid.Column width={16}>
-                        {ebayParserStore.loading && <SearchPlaceholder/>}
-                        {!ebayParserStore.loading && ebayParserStore.ebayItems && ebayParserStore.ebayItems.length > 0 &&
+                        {loading && <SearchPlaceholder/>}
+                        {!loading && ebayItems && ebayItems.length > 0 &&
                         <Segment>
                             <Item.Group divided>
-                                {ebayParserStore.ebayItems.map((item, index) => (
+                                {ebayItems.map((item, index) => (
                                     <SearchResultItem item={item} key={item.shopName + index}/>))
                                 }
                             </Item.Group>

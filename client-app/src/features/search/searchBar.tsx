@@ -22,6 +22,8 @@ const SearchBar = () => {
         coefficient: Yup.number().typeError('Number is required').required('Coefficient is required').moreThan(0, 'Coefficient must be greater than 0')
     })
 
+
+    
     const handleFormSubmit = async (request: EbayRequest) => {
         await getAllItemByRequest(request);
     }
