@@ -9,7 +9,7 @@ export default class EbayParserStore{
     minItem: EbayProductItem = {} as EbayProductItem;
     ebayItems: EbayProductItem[] = [];
     loading: boolean = false;
-    
+    initialLoad: boolean = true;
     constructor() {
         makeAutoObservable(this);
     }
@@ -37,6 +37,7 @@ export default class EbayParserStore{
     }
     
     toggleLoad = (loading: boolean, error: any = null) => {
+        this.initialLoad = false;
         this.loading = loading;
         if(error){
             console.log(error);

@@ -9,9 +9,9 @@ import {toast} from "react-toastify";
 
 const Search = () => {
     const { ebayParserStore } = useStore();
-    const { ebayItems, loading } = ebayParserStore;
+    const { ebayItems, loading, initialLoad } = ebayParserStore;
     useEffect(() => {
-        if(ebayItems.length === 0){
+        if(!initialLoad && ebayItems?.length === 0){
             toast.warn('Server Error or No Items. Please run the search again.', {
                 position: "bottom-right",
                 autoClose: 5000,
