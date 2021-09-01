@@ -5,10 +5,12 @@ import {useStore} from "../../app/stores/store";
 import {observer} from "mobx-react-lite";
 import CurrencyInput from "react-currency-input-field";
 
-
-const ProfitCalculator = () => {
+interface Props{
+    initPrice: number | null
+}
+const ProfitCalculator = ({initPrice}: Props) => {
     const {requestStore} = useStore();
-    const [value, setValue] = useState<string>("");
+    const [value, setValue] = useState<string>(initPrice?.toString() || '');
     const [profit, setProfit] = useState<number>(0);
     const [newPrice, setNewPrice] = useState<number>(0);
     
@@ -49,9 +51,8 @@ const ProfitCalculator = () => {
                             name="newPrice"
                             value={value}
                             onValueChange={onChange}
-                            placeholder="Please enter a number"
+                            placeholder="Please enter a Price"
                             prefix={'$'}
-                            decimalScale={2}
                             step={1}
                         />
                     </div>

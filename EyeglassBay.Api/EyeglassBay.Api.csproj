@@ -83,6 +83,15 @@
       <_ContentIncludedByDefault Remove="wwwroot\static\js\main.c6174649.chunk.js.map" />
       <_ContentIncludedByDefault Remove="wwwroot\static\js\main.6678c0c2.chunk.js" />
       <_ContentIncludedByDefault Remove="wwwroot\static\js\main.6678c0c2.chunk.js.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\static\js\2.ed011709.chunk.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\static\js\2.ed011709.chunk.js.LICENSE.txt" />
+      <_ContentIncludedByDefault Remove="wwwroot\static\js\2.ed011709.chunk.js.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\static\js\3.1226a22c.chunk.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\static\js\3.1226a22c.chunk.js.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\static\js\main.4d678362.chunk.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\static\js\main.4d678362.chunk.js.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\static\js\runtime-main.ddb65e29.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\static\js\runtime-main.ddb65e29.js.map" />
     </ItemGroup>
 
 </Project>

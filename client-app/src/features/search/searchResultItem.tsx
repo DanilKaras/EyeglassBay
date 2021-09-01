@@ -41,7 +41,7 @@ const SearchResultItem = ({item}: Props) => {
                                     <span> | Total Price <b>{item.totalPrice} $</b></span>
                                 </Grid.Column>
                             </Grid.Row>
-                            {item.isMyShop && <ProfitCalculator/>}
+                            {item.isMyShop && <ProfitCalculator initPrice={item.priceNoDiscount}/>}
                         </Grid>
                        
                         

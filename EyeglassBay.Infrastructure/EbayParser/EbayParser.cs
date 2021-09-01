@@ -54,18 +54,9 @@ namespace EyeglassBay.Infrastructure.EbayParser
 
                 var url = string.Format(baseUrl, itemsPerPage, request.SearchString, pageNumber);
 
-                HtmlDocument doc;
-                try
-                {
-                    doc = await GetHtmlDocument(url);
-                }
-                catch (Exception)
-                {
-                    var message = $"Couldn't execute the request for URL: {url}";
-                    _logger.LogError(message);
-                    throw;
-                }
-
+                var doc = await GetHtmlDocument(url);
+                if (doc == null) return new List<EbayProductItem>();
+                
                 var targetStyleClass = GetSponsoredTargetStyle(doc);
 
                 var productsHtml = GetAllItems(doc);
@@ -237,14 +228,23 @@ namespace EyeglassBay.Infrastructure.EbayParser
 
         private async Task<HtmlDocument> GetHtmlDocument(string url)
         {
-            using (var httpClient = new HttpClient{Timeout = TimeSpan.FromMinutes(10)})
+            try
             {
-                var html = await httpClient.GetStringAsync(url);
+                using (var httpClient = new HttpClient {Timeout = TimeSpan.FromMinutes(10)})
+                {
+                    var html = await httpClient.GetStringAsync(url);
 
-                var doc = new HtmlDocument();
-                doc.LoadHtml(html);
-                return doc;
+                    var doc = new HtmlDocument();
+                    doc.LoadHtml(html);
+                    return doc;
+                }
             }
+            catch (Exception)
+            {
+                var message = $"Couldn't execute the request for URL: {url}";
+                _logger.LogError(message);
+            }
+            return null;
         }
 
         private HtmlNodeCollection GetAllItems(HtmlDocument doc)
