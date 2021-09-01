@@ -1,5 +1,6 @@
-import {Icon, Item, Label} from "semantic-ui-react";
+import {Grid, Icon, Input, Item, Label} from "semantic-ui-react";
 import {EbayProductItem} from "../../app/models/ebaySearchRequest";
+import ProfitCalculator from "./profitCalculator";
 
 
 interface Props {
@@ -22,16 +23,28 @@ const SearchResultItem = ({item}: Props) => {
                 <Item.Content>
                     <Item.Header>{item.productName}</Item.Header>
                     <Item.Meta>
-                        <Label color={'teal'}>
-                            <Icon name='money' /> {item.price} $
+                        <Label color={'violet'}>
+                            <Icon name='money bill alternate outline' /> {item.price} $
                             <Label.Detail>{item.isDiscounted ? `Discount is ${item.discount} %` : 'No Discount'}</Label.Detail>
+                        </Label>
+                        <Label color={item.profit > 0 ? 'green' : 'red'}>
+                            <Icon name='money bill alternate'/> Profit $ {item.profit}
                         </Label>
                         </Item.Meta>
                     <Item.Description>
-                        <span>Seller: <b>{item.shopName}</b></span>  
-                        {item.isDiscounted &&  <span> | Price with no discount: <b>{item.priceNoDiscount} $</b> </span>}
-                        {(!item.isFreeDelivery || item.isDeliveryNotSpecified) && (<span> | Delivery: <b>{item.deliveryPrice || 'No specified'} $</b> </span>)}
-                        <span> | Total Price <b>{item.totalPrice} $</b></span>
+                        <Grid columns={1}>
+                            <Grid.Row>
+                                <Grid.Column width={12}>
+                                    <span>Seller: <b>{item.shopName}</b></span>
+                                    {item.isDiscounted &&  <span> | Price with no discount: <b>{item.priceNoDiscount} $</b> </span>}
+                                    {(!item.isFreeDelivery || item.isDeliveryNotSpecified) && (<span> | Delivery: <b>{item.deliveryPrice || 'No specified'} $</b> </span>)}
+                                    <span> | Total Price <b>{item.totalPrice} $</b></span>
+                                </Grid.Column>
+                            </Grid.Row>
+                            {item.isMyShop && <ProfitCalculator/>}
+                        </Grid>
+                       
+                        
                     </Item.Description>
                     <Item.Extra>
                         <Label as='a'
@@ -40,9 +53,7 @@ const SearchResultItem = ({item}: Props) => {
                                target={'_blank'}>
                             <Icon name={'globe'}/> Visit Page
                         </Label>
-                        <Label color={item.profit > 0 ? 'green' : 'red'}>
-                            <Icon name='money'/> Profit $ {item.profit}
-                        </Label>
+                       
                     </Item.Extra>
                 </Item.Content>
             </Item>

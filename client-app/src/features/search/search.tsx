@@ -28,8 +28,8 @@ const Search = () => {
                         {!ebayParserStore.loading && ebayParserStore.ebayItems && ebayParserStore.ebayItems.length > 0 &&
                         <Segment>
                             <Item.Group divided>
-                                {ebayParserStore.ebayItems.map(item => (
-                                    <SearchResultItem item={item}/>))
+                                {ebayParserStore.ebayItems.map((item, index) => (
+                                    <SearchResultItem item={item} key={item.shopName + index}/>))
                                 }
                             </Item.Group>
                         </Segment>

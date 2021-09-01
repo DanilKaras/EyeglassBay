@@ -218,8 +218,7 @@ namespace EyeglassBay.Infrastructure.EbayParser
 
         private async Task<HtmlDocument> GetHtmlDocument(string url)
         {
-            var httpClient = new HttpClient();
-            httpClient.Timeout = TimeSpan.FromMinutes(10);
+            var httpClient = new HttpClient {Timeout = TimeSpan.FromMinutes(10)};
             var html = await httpClient.GetStringAsync(url);
 
             var doc = new HtmlDocument();

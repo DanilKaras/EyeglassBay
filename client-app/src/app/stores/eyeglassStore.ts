@@ -7,6 +7,7 @@ export default  class EyeglassStore {
     loading: boolean = false;
     loadingInitial: boolean = false;
     
+    
     constructor() {
         makeAutoObservable(this);    
     }
