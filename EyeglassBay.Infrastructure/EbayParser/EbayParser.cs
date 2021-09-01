@@ -237,12 +237,14 @@ namespace EyeglassBay.Infrastructure.EbayParser
 
         private async Task<HtmlDocument> GetHtmlDocument(string url)
         {
-            var httpClient = new HttpClient {Timeout = TimeSpan.FromMinutes(10)};
-            var html = await httpClient.GetStringAsync(url);
+            using (var httpClient = new HttpClient{Timeout = TimeSpan.FromMinutes(10)})
+            {
+                var html = await httpClient.GetStringAsync(url);
 
-            var doc = new HtmlDocument();
-            doc.LoadHtml(html);
-            return doc;
+                var doc = new HtmlDocument();
+                doc.LoadHtml(html);
+                return doc;
+            }
         }
 
         private HtmlNodeCollection GetAllItems(HtmlDocument doc)
