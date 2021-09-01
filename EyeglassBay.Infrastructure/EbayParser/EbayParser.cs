@@ -82,7 +82,7 @@ namespace EyeglassBay.Infrastructure.EbayParser
         }
 
 
-        private async Task <EbayProductItem> CollectDataForEbayItem(HtmlNode item, EbayRequestDto request)
+        private async Task<EbayProductItem> CollectDataForEbayItem(HtmlNode item, EbayRequestDto request)
         {
             var productName = GetProductName(item);
             var price = GetPrice(item);
@@ -95,11 +95,20 @@ namespace EyeglassBay.Infrastructure.EbayParser
             {
                 itemPriceWithNoDiscount = GetItemPriceWithNoDiscount(item);
             }
+
             var ebayItem = CreateItem(productName, price, itemUrl, itemImage);
             GetLogisticCost(logistic, ebayItem);
             GetDiscount(itemDiscount, itemPriceWithNoDiscount, ebayItem);
             CalculateTotalPrice(ebayItem);
-            await GetShopName(ebayItem);
+            try
+            {
+                await GetShopName(ebayItem);
+            }
+            catch (Exception)
+            {
+                _logger.LogError($"Couldn't get the shop inf by url {ebayItem.Url}");
+            }
+
 
             CalculateProfit(ebayItem, request.OriginalPrice, request.Coefficient);
 
@@ -239,8 +248,8 @@ namespace EyeglassBay.Infrastructure.EbayParser
             var countNode = doc.DocumentNode.SelectSingleNode(
                 @".//*[contains(concat("" "",normalize-space(@class),"" ""),"" srp-controls__count-heading "")]//span[not(preceding-sibling::*)]");
 
-            int.TryParse(countNode?.InnerText, out var count);
-            return count;
+            if(!double.TryParse(countNode?.InnerText, out var count)) return 0;
+            return (int)count;
         }
 
         private string GetProductName(HtmlNode item)
