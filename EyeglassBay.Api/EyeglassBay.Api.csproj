@@ -108,6 +108,12 @@
       <_ContentIncludedByDefault Remove="wwwroot\static\js\2.0e4085c2.chunk.js.map" />
       <_ContentIncludedByDefault Remove="wwwroot\static\js\main.662d3c75.chunk.js" />
       <_ContentIncludedByDefault Remove="wwwroot\static\js\main.662d3c75.chunk.js.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\static\js\main.87cd4fc1.chunk.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\static\js\main.87cd4fc1.chunk.js.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\static\js\main.7ca21733.chunk.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\static\js\main.7ca21733.chunk.js.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\static\js\main.c3603108.chunk.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\static\js\main.c3603108.chunk.js.map" />
     </ItemGroup>
 
 </Project>

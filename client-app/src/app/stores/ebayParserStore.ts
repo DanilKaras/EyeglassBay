@@ -51,7 +51,9 @@ export default class EbayParserStore{
     }
     
     toggleLoad = (loading: boolean, error: any = null) => {
-        clearTimeout(this.timeout);
+        if(!loading){
+            clearTimeout(this.timeout);
+        }
         this.initialLoad = false;
         this.loading = loading;
         if(error){
@@ -62,8 +64,9 @@ export default class EbayParserStore{
     checkIfRequestTimedOut(){
         this.timeout = setTimeout(() => {
             if(this.loading){
-                this.toggleLoad(false);
                 serverTimeoutToast();
+                this.ebayItems = [];
+                this.toggleLoad(false);
             }
         }, TIMEOUT * 1000)
     }
