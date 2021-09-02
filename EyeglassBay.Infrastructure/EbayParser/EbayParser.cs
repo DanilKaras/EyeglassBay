@@ -232,6 +232,7 @@ namespace EyeglassBay.Infrastructure.EbayParser
             {
                 using (var httpClient = new HttpClient {Timeout = TimeSpan.FromMinutes(10)})
                 {
+                    httpClient.DefaultRequestHeaders.Add("Connection", "keep-alive");
                     var htmlStream = await httpClient.GetStreamAsync(url);
                     using (var reader = new StreamReader(htmlStream))
                     {
