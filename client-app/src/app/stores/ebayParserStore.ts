@@ -11,6 +11,7 @@ export default class EbayParserStore{
     ebayItems: EbayProductItem[] = [];
     loading: boolean = false;
     initialLoad: boolean = true;
+    timeout: any;
     constructor() {
         makeAutoObservable(this);
     }
@@ -50,6 +51,7 @@ export default class EbayParserStore{
     }
     
     toggleLoad = (loading: boolean, error: any = null) => {
+        clearTimeout(this.timeout);
         this.initialLoad = false;
         this.loading = loading;
         if(error){
@@ -58,7 +60,7 @@ export default class EbayParserStore{
     }    
     
     checkIfRequestTimedOut(){
-        setTimeout(() => {
+        this.timeout = setTimeout(() => {
             if(this.loading){
                 this.toggleLoad(false);
                 serverTimeoutToast();

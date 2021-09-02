@@ -101,6 +101,13 @@
       <_ContentIncludedByDefault Remove="wwwroot\static\js\main.566c4c21.chunk.js.map" />
       <_ContentIncludedByDefault Remove="wwwroot\static\js\main.4ab408af.chunk.js" />
       <_ContentIncludedByDefault Remove="wwwroot\static\js\main.4ab408af.chunk.js.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\static\js\main.53df05f2.chunk.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\static\js\main.53df05f2.chunk.js.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\static\js\2.0e4085c2.chunk.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\static\js\2.0e4085c2.chunk.js.LICENSE.txt" />
+      <_ContentIncludedByDefault Remove="wwwroot\static\js\2.0e4085c2.chunk.js.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\static\js\main.662d3c75.chunk.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\static\js\main.662d3c75.chunk.js.map" />
     </ItemGroup>
 
 </Project>
