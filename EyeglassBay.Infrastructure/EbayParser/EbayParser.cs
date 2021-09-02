@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -231,11 +232,15 @@ namespace EyeglassBay.Infrastructure.EbayParser
             {
                 using (var httpClient = new HttpClient {Timeout = TimeSpan.FromMinutes(10)})
                 {
-                    var html = await httpClient.GetStringAsync(url);
-
-                    var doc = new HtmlDocument();
-                    doc.LoadHtml(html);
-                    return doc;
+                    var htmlStream = await httpClient.GetStreamAsync(url);
+                    using (var reader = new StreamReader(htmlStream))
+                    {
+                        var html = await reader.ReadToEndAsync();
+                        var doc = new HtmlDocument();
+                        doc.LoadHtml(html);
+                        
+                        return doc;
+                    }
                 }
             }
             catch (Exception ex)
