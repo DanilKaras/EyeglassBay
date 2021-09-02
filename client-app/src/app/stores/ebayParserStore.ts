@@ -3,7 +3,7 @@ import agent from "../api/agent";
 import {EbayProductItem, EbayRequest} from "../models/ebaySearchRequest";
 import {store} from "./store";
 import {serverTimeoutToast} from "../common/utils/toasterMessage";
-const TIMEOUT: number = 90;
+const TIMEOUT: number = 60;
 
 export default class EbayParserStore{
     
