@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Web;
 using EyeglassBay.Domain.DTOs;
 using EyeglassBay.Domain.Models;
 using EyeglassBay.Infrastructure.Models;
@@ -40,10 +41,9 @@ namespace EyeglassBay.Infrastructure.EbayParser
 
         public async Task<IList<EbayProductItem>> GetItemsAsync(EbayRequestDto request)
         {
+            var result = new List<EbayProductItem>();
             try
             {
-                var result = new List<EbayProductItem>();
-
                 const int pageNumber = 1;
 
                 if (!int.TryParse(_configuration["Ebay:ItemsPerPage"], out var itemsPerPage)) return result;
@@ -52,10 +52,9 @@ namespace EyeglassBay.Infrastructure.EbayParser
 
                 if (string.IsNullOrEmpty(baseUrl)) return result;
 
-                var url = string.Format(baseUrl, itemsPerPage, request.SearchString, pageNumber);
+                var url = string.Format(baseUrl, itemsPerPage, HttpUtility.HtmlEncode(request.SearchString), pageNumber);
 
                 var doc = await GetHtmlDocument(url);
-                if (doc == null) return new List<EbayProductItem>();
                 
                 var targetStyleClass = GetSponsoredTargetStyle(doc);
 
@@ -78,7 +77,7 @@ namespace EyeglassBay.Infrastructure.EbayParser
             catch (Exception ex)
             {
                 _logger.LogError(ex, ex.Message);
-                throw;
+                return result;
             }
         }
 
@@ -239,12 +238,12 @@ namespace EyeglassBay.Infrastructure.EbayParser
                     return doc;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 var message = $"Couldn't execute the request for URL: {url}";
-                _logger.LogError(message);
+                _logger.LogError(ex, message);
+                throw;
             }
-            return null;
         }
 
         private HtmlNodeCollection GetAllItems(HtmlDocument doc)

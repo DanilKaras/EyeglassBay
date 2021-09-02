@@ -31,8 +31,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
-    "postbuild": "mv build ../EyeglassBay.Api/wwwroot",
+    "build": "BUILD_PATH='../EyeglassBay.Api/wwwroot' react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

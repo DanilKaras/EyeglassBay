@@ -10,7 +10,7 @@ import * as Yup from "yup";
 
 const SearchBar = () => {
     const { ebayParserStore } = useStore();
-    const { getAllItemByRequest } = ebayParserStore;
+    const { getAllItemByRequest, loading } = ebayParserStore;
     const [ebayRequest] = useState<EbayRequest>(
         {
             searchString: ''
@@ -43,8 +43,8 @@ const SearchBar = () => {
                             <MyTextInput name={'coefficient'} placeholder={'Coefficient'} type={'text'} width={4} />
                         </Form.Group>
                         <Button
-                            disabled={ebayParserStore.loading || isSubmitting || !dirty || !isValid}
-                            loading={ebayParserStore.loading}
+                            disabled={loading || !dirty || !isValid}
+                            loading={loading}
                             positive
                             type='submit'
                             floated={'right'}

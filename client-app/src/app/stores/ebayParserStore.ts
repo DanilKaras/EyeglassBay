@@ -2,7 +2,8 @@ import {makeAutoObservable} from "mobx";
 import agent from "../api/agent";
 import {EbayProductItem, EbayRequest} from "../models/ebaySearchRequest";
 import {store} from "./store";
-
+import {serverTimeoutToast} from "../common/utils/toasterMessage";
+const TIMEOUT: number = 90;
 
 export default class EbayParserStore{
     
@@ -14,6 +15,17 @@ export default class EbayParserStore{
         makeAutoObservable(this);
     }
 
+    get isMyStoreMin () {
+        if(this.ebayItems?.length > 0){
+            return this.ebayItems[0].isMyShop;
+        }
+        return false;
+    }
+    
+    get hasItems(){
+        return this.ebayItems.length > 0;
+    }
+    
     getMinItemByRequest = async (request: EbayRequest) => {
         try{
             this.toggleLoad(true);
@@ -29,6 +41,7 @@ export default class EbayParserStore{
         try{
             this.toggleLoad(true);
             store.requestStore.setRequest(request);
+            this.checkIfRequestTimedOut();
             this.ebayItems = await agent.EbayParser.getItems(request);
             this.toggleLoad(false);
         }catch (error){
@@ -43,4 +56,13 @@ export default class EbayParserStore{
             console.log(error);
         }
     }    
+    
+    checkIfRequestTimedOut(){
+        setTimeout(() => {
+            if(this.loading){
+                this.toggleLoad(false);
+                serverTimeoutToast();
+            }
+        }, TIMEOUT * 1000)
+    }
 }
