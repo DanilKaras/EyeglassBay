@@ -3,7 +3,7 @@ import agent from "../api/agent";
 import {EbayProductItem, EbayRequest} from "../models/ebaySearchRequest";
 import {store} from "./store";
 import {serverTimeoutToast} from "../common/utils/toasterMessage";
-const TIMEOUT: number = 60;
+const TIMEOUT: number = 40;
 
 export default class EbayParserStore{
     
@@ -41,9 +41,11 @@ export default class EbayParserStore{
     getAllItemByRequest = async (request: EbayRequest) => {
         try{
             this.toggleLoad(true);
+            this.setLocalStorage(request);
             store.requestStore.setRequest(request);
             this.checkIfRequestTimedOut();
             this.ebayItems = await agent.EbayParser.getItems(request);
+            this.clearLocalStorage();
             this.toggleLoad(false);
         }catch (error){
             this.toggleLoad(true, error);
@@ -69,5 +71,18 @@ export default class EbayParserStore{
                 this.toggleLoad(false);
             }
         }, TIMEOUT * 1000)
+    }
+    
+    
+    setLocalStorage(request: EbayRequest){
+        localStorage.setItem("coefficient", request.coefficient?.toString() || '');
+        localStorage.setItem("originalPrice", request.originalPrice?.toString() || '');
+        localStorage.setItem("searchString", request.searchString);
+    }
+
+    clearLocalStorage(){
+        localStorage.removeItem("coefficient");
+        localStorage.removeItem("originalPrice");
+        localStorage.removeItem("searchString");
     }
 }

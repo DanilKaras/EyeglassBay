@@ -9,12 +9,10 @@ import * as Yup from "yup";
 
 
 const SearchBar = () => {
-    const { ebayParserStore } = useStore();
+    const { ebayParserStore, requestStore } = useStore();
     const { getAllItemByRequest, loading } = ebayParserStore;
-    const [ebayRequest] = useState<EbayRequest>(
-        {
-            searchString: ''
-        } as EbayRequest);
+    const { requestFromStorage } = requestStore;
+    const [ebayRequest] = useState<EbayRequest>(requestFromStorage);
 
     const validationSchema = Yup.object({
         searchString: Yup.string().required('The search string is required'),
@@ -43,7 +41,7 @@ const SearchBar = () => {
                             <MyTextInput name={'coefficient'} placeholder={'Coefficient'} type={'text'} width={4} />
                         </Form.Group>
                         <Button
-                            disabled={loading || !dirty || !isValid}
+                            disabled={loading || !isValid}
                             loading={loading}
                             positive
                             type='submit'

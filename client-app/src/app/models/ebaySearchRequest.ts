@@ -1,7 +1,7 @@
 export interface EbayRequest {
     searchString: string;
-    originalPrice: number;
-    coefficient: number;
+    originalPrice: number | null;
+    coefficient: number | null;
 }
 
 export interface EbayProductItem{
