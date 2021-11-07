@@ -19,4 +19,5 @@ export interface EbayProductItem{
     isDiscounted: boolean;
     discount: number | null;
     priceNoDiscount: number | null;
+    stock: string;
 }

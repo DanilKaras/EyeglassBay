@@ -16,5 +16,6 @@ namespace EyeglassBay.Domain.Models
         public bool IsDiscounted => Discount.HasValue;
         public decimal? Discount { get; set; }  
         public decimal? PriceNoDiscount { get; set; }
+        public string Stock { get; set; }
     }
 }

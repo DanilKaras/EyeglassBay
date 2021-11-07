@@ -103,7 +103,9 @@ namespace EyeglassBay.Infrastructure.EbayParser
             CalculateTotalPrice(ebayItem);
             try
             {
-                await GetShopName(ebayItem);
+                var shop = await GetShopPage(ebayItem);
+                GetShopName(shop, ebayItem);
+                GetShopStock(shop, ebayItem);
             }
             catch (Exception)
             {
@@ -158,23 +160,46 @@ namespace EyeglassBay.Infrastructure.EbayParser
             }
         }
 
-        private async Task GetShopName(EbayProductItem ebayItem)
+        private async Task<HtmlDocument> GetShopPage(EbayProductItem ebayItem)
         {
-            var doc = await GetHtmlDocument(ebayItem.Url);
+            if (!string.IsNullOrEmpty(ebayItem.Url))
+            {
+                return await GetHtmlDocument(ebayItem.Url);
+            }
 
+            return null;
+        }
+
+
+        private bool GetIsMyShop(string shopName, EbayProductItem ebayItem)
+        {
+            var myShopName = _configuration["Ebay:ShopName"];
+             ebayItem.ShopName = shopName;
+             if (shopName != null && shopName.ToLower().Equals(myShopName.ToLower()))
+             {
+                 return true;
+             }
+
+             return false;
+        }
+        private void GetShopName(HtmlDocument doc, EbayProductItem ebayItem)
+        {
             var shopName = doc.DocumentNode
                 .SelectSingleNode(
                     @".//*[@id=""RightSummaryPanel""]//*[contains(concat("" "",normalize-space(@class),"" ""),"" mbg-nw "")]")
                 ?.InnerHtml;
 
-            var myShopName = _configuration["Ebay:ShopName"];
             ebayItem.ShopName = shopName;
-            if (shopName != null && shopName.ToLower().Equals(myShopName.ToLower()))
-            {
-                ebayItem.IsMyShop = true;
-            }
+            ebayItem.IsMyShop = GetIsMyShop(shopName, ebayItem);
         }
 
+        private void GetShopStock(HtmlDocument doc, EbayProductItem ebayItem)
+        {
+            var shopStock = doc.DocumentNode.SelectSingleNode(
+                @".//*[@id=""qtySubTxt""]/span")?.InnerHtml;
+            ebayItem.Stock = shopStock?.Trim();
+        }
+        
         private EbayProductItem CreateItem(string productName, string price, string itemUrl, string itemImage)
         {
             var splitPrice = price?.Replace("$", "").Split(" ", StringSplitOptions.RemoveEmptyEntries).FirstOrDefault();
@@ -325,7 +350,8 @@ namespace EyeglassBay.Infrastructure.EbayParser
         
         private async Task<EbayProductItem> GetItemLowestPriced(EbayProductItem item)
         {
-            await GetShopName(item);
+            var shopPage = await GetShopPage(item);
+            GetShopName(shopPage, item);
             return item;
         }
 
@@ -341,7 +367,8 @@ namespace EyeglassBay.Infrastructure.EbayParser
             var compareShops = new List<EbayProductItem>();
             foreach (var ebayItem in items)
             {
-                await GetShopName(ebayItem);
+                var shopPage = await GetShopPage(ebayItem);
+                GetShopName(shopPage, ebayItem);
                 if (ebayItem.IsMyShop)
                 {
                     return ebayItem;

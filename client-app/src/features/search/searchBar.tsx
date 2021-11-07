@@ -36,7 +36,7 @@ const SearchBar = () => {
                 {({ handleSubmit, isValid, isSubmitting, errors, dirty}) => (
                     <Form onSubmit={handleSubmit} autoComplete='off'>
                         <Form.Group widths='equal'>
-                            <MyTextInput name={'searchString'} placeholder={'Search'} type={'text'} width={10}/>
+                            <MyTextInput name={'searchString'} placeholder={'Search'} type={'text'} width={4}/>
                             <MyTextInput name={'originalPrice'} placeholder={'Price'} type={'text'} width={4} />
                             <MyTextInput name={'coefficient'} placeholder={'Coefficient'} type={'text'} width={4} />
                         </Form.Group>

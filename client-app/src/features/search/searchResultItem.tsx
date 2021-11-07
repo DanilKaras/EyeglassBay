@@ -28,7 +28,7 @@ const SearchResultItem = ({item}: Props) => {
                             <Label.Detail>{item.isDiscounted ? `Discount is ${item.discount} %` : 'No Discount'}</Label.Detail>
                         </Label>
                         <Label color={item.profit > 0 ? 'green' : 'red'}>
-                            <Icon name='money bill alternate'/> Profit $ {item.profit}
+                            <Icon name='money bill alternate'/> Profit $ {item.profit} | 15%
                         </Label>
                         </Item.Meta>
                     <Item.Description>
@@ -39,12 +39,11 @@ const SearchResultItem = ({item}: Props) => {
                                     {item.isDiscounted &&  <span> | Price with no discount: <b>{item.priceNoDiscount} $</b> </span>}
                                     {(!item.isFreeDelivery || item.isDeliveryNotSpecified) && (<span> | Delivery: <b>{item.deliveryPrice || 'No specified'} $</b> </span>)}
                                     <span> | Total Price <b>{item.totalPrice} $</b></span>
+                                    <span> | Stock: <b>{item.stock || 'Not provided'}</b></span>
                                 </Grid.Column>
                             </Grid.Row>
                             {item.isMyShop && <ProfitCalculator initPrice={item.priceNoDiscount}/>}
                         </Grid>
-                       
-                        
                     </Item.Description>
                     <Item.Extra>
                         <Label as='a'
