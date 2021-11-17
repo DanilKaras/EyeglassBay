@@ -19,7 +19,7 @@ namespace EyeglassBay.Infrastructure.EbayParser
     {
         private readonly ILogger _logger;
         private readonly IConfiguration _configuration;
-
+        private const decimal coeff = 0.825m;
         public EbayParser(ILogger<EbayParser> logger, IConfiguration configuration)
         {
             _logger = logger;
@@ -405,7 +405,7 @@ namespace EyeglassBay.Infrastructure.EbayParser
 
         private decimal CalculateProfitForDiscountedItem(EbayProductItem item, decimal buyingPrice, int percentage)
         {
-            var priceWithNoCommission = item.TotalPrice * (decimal)0.83 -5;
+            var priceWithNoCommission = item.TotalPrice * coeff -5;
             var clearPrice = buyingPrice * (1 - (decimal)percentage / 100);
             return decimal.Round(priceWithNoCommission - clearPrice, 2);
         }
@@ -413,7 +413,7 @@ namespace EyeglassBay.Infrastructure.EbayParser
         private decimal CalculateProfitForNonDiscountedItem(EbayProductItem item, decimal buyingPrice, int percentage)
         {
             var priceRemoveAmountWhenNoDiscount = item.TotalPrice * (decimal) 0.87;
-            var priceWithNoCommission = priceRemoveAmountWhenNoDiscount * (decimal) 0.825 -5;
+            var priceWithNoCommission = priceRemoveAmountWhenNoDiscount * coeff -5;
             var clearPrice = buyingPrice * (1 - (decimal)percentage / 100);
             return decimal.Round(priceWithNoCommission - clearPrice, 2);
         }
