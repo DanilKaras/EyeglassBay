@@ -413,7 +413,7 @@ namespace EyeglassBay.Infrastructure.EbayParser
         private decimal CalculateProfitForNonDiscountedItem(EbayProductItem item, decimal buyingPrice, int percentage)
         {
             var priceRemoveAmountWhenNoDiscount = item.TotalPrice * (decimal) 0.87;
-            var priceWithNoCommission = priceRemoveAmountWhenNoDiscount * (decimal) 0.83 -5;
+            var priceWithNoCommission = priceRemoveAmountWhenNoDiscount * (decimal) 0.825 -5;
             var clearPrice = buyingPrice * (1 - (decimal)percentage / 100);
             return decimal.Round(priceWithNoCommission - clearPrice, 2);
         }

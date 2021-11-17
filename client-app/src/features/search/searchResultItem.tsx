@@ -28,7 +28,7 @@ const SearchResultItem = ({item}: Props) => {
                             <Label.Detail>{item.isDiscounted ? `Discount is ${item.discount} %` : 'No Discount'}</Label.Detail>
                         </Label>
                         <Label color={item.profit > 0 ? 'green' : 'red'}>
-                            <Icon name='money bill alternate'/> Profit $ {item.profit} | 15%
+                            <Icon name='money bill alternate'/> Profit $ {item.profit}
                         </Label>
                         </Item.Meta>
                     <Item.Description>
