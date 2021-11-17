@@ -124,6 +124,8 @@
       <_ContentIncludedByDefault Remove="wwwroot\static\js\main.fdb4c004.chunk.js.map" />
       <_ContentIncludedByDefault Remove="wwwroot\static\js\main.8a695b6f.chunk.js" />
       <_ContentIncludedByDefault Remove="wwwroot\static\js\main.8a695b6f.chunk.js.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\static\js\main.26e3bb11.chunk.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\static\js\main.26e3bb11.chunk.js.map" />
     </ItemGroup>
 
 </Project>
