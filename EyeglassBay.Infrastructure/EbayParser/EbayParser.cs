@@ -19,7 +19,7 @@ namespace EyeglassBay.Infrastructure.EbayParser
     {
         private readonly ILogger _logger;
         private readonly IConfiguration _configuration;
-        private const decimal coeff = 0.835m;
+        private const decimal coeff = 0.825m;
         public EbayParser(ILogger<EbayParser> logger, IConfiguration configuration)
         {
             _logger = logger;

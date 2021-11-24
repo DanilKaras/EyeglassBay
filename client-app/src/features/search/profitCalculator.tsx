@@ -22,7 +22,7 @@ const ProfitCalculator = ({initPrice}: Props) => {
         let clearPrice: number = evaluate(`${originalPrice} * (1 - ${coefficient} / 100)`);
         clearPrice = round<number>(clearPrice, 2);
         const priceRemoveAmountWhenNoDiscount: number = evaluate(`${price}*0.87`);
-        const priceWithNoCommission = evaluate(`${priceRemoveAmountWhenNoDiscount} * 0.835 - 5`);
+        const priceWithNoCommission = evaluate(`${priceRemoveAmountWhenNoDiscount} * 0.825 - 5`);
         let newProfit = evaluate(`${priceWithNoCommission} - ${clearPrice}`);
         newProfit = round<number>(newProfit, 2);
 
