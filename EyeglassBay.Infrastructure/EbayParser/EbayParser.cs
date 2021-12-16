@@ -175,7 +175,7 @@ namespace EyeglassBay.Infrastructure.EbayParser
         {
             var myShopName = _configuration["Ebay:ShopName"];
              ebayItem.ShopName = shopName;
-             if (shopName != null && shopName.ToLower().Equals(myShopName.ToLower()))
+             if (shopName != null && shopName.ToLower().Contains(myShopName.ToLower()))
              {
                  return true;
              }
@@ -186,7 +186,7 @@ namespace EyeglassBay.Infrastructure.EbayParser
         {
             var shopName = doc.DocumentNode
                 .SelectSingleNode(
-                    @".//*[@id=""RightSummaryPanel""]//*[contains(concat("" "",normalize-space(@class),"" ""),"" mbg-nw "")]")
+                    @".//*[@id=""RightSummaryPanel""]//*[contains(concat("" "",normalize-space(@class),"" ""),"" ux-seller-section__item--seller "")]//a//span")
                 ?.InnerHtml;
 
             ebayItem.ShopName = shopName;
