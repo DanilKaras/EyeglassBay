@@ -19,6 +19,7 @@ const NavBar = () => {
                     <Dropdown pointing={'top left'} text={'Admin'}>
                         <Dropdown.Menu>
                             <Dropdown.Item onClick={logout} text={'Logout'} icon={'power'}/>
+                            <Dropdown.Item as={NavLink} to={'/settings'} text={'Settings'} icon={'settings'}/>
                         </Dropdown.Menu>
                     </Dropdown>
                 </Menu.Item>

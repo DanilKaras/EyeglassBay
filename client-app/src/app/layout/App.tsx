@@ -15,18 +15,22 @@ import ServerError from '../../features/errors/ServerError';
 import NotFound from '../../features/errors/NotFound';
 import Search from '../../features/search/search';
 import {ToastContainer} from "react-toastify";
+import SettingsPage from "../../features/settings/SettingsPage";
 
 function App() {
 
-    const { commonStore, userStore} = useStore();
+    const { commonStore, userStore, settingsStore} = useStore();
 
 
     useEffect(() => {
         commonStore.token 
-            ? userStore.getUser().finally(() => commonStore.setAppLoaded())
+            ? userStore.getUser().finally(() => {
+                settingsStore.getCalculationCoefficient();
+                commonStore.setAppLoaded();
+            })
             : commonStore.setAppLoaded();
         
-    }, [commonStore, userStore])
+    }, [commonStore, userStore, settingsStore])
 
     if(!commonStore.appLoaded) return <LoadingComponent content='Loading app...' />
     return (
@@ -46,6 +50,7 @@ function App() {
                                 <PrivateRoute path='/eyeglasses' component={EyeglassList} />
                                 <PrivateRoute path='/document-upload' component={DocumentUpload} />
                                 <PrivateRoute path={'/errors'} component={TestErrors}/>
+                                <PrivateRoute path={'/settings'} component={SettingsPage}/>
                                 <Route path='/server-error' component={ServerError}/>
                                 <Route component={NotFound} />
                             </Switch>

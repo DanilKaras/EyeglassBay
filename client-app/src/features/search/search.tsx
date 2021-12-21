@@ -8,8 +8,9 @@ import {useEffect} from "react";
 import {serverErrorOrNoItemsToast} from "../../app/common/utils/toasterMessage";
 
 const Search = () => {
-    const { ebayParserStore } = useStore();
+    const { ebayParserStore, settingsStore } = useStore();
     const { ebayItems, loading, initialLoad, isMyStoreMin, hasItems } = ebayParserStore;
+    const { calculationCoefficient, loadingInitial: loadingCoefficientInitial } = settingsStore;
     useEffect(() => {
         if(!initialLoad && ebayItems?.length === 0){
             serverErrorOrNoItemsToast();
@@ -20,6 +21,15 @@ const Search = () => {
             <Grid centered>
                 <Grid.Row>
                     <Grid.Column width={16}>
+                        {
+                            !loadingCoefficientInitial && 
+                            <Divider horizontal>
+                                <Header as='h4' color={'black'}>
+                                    <Icon name='calculator' color={'orange'} />
+                                    Calculation coefficient: {calculationCoefficient}
+                                </Header>
+                            </Divider>
+                        }
                         <SearchBar/>
                     </Grid.Column>
                 </Grid.Row>

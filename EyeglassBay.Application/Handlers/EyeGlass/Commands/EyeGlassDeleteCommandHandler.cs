@@ -2,7 +2,6 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using EyeglassBay.Application.Core;
-using EyeglassBay.Domain.Entities;
 using EyeglassBay.Persistence;
 using MediatR;
 
@@ -31,6 +30,7 @@ namespace EyeglassBay.Application.Handlers
                 
                 _context.EyeGlasses.Remove(eyeGlass);
                 var result = await _context.SaveChangesAsync(cancellationToken) > 0;
+                
                 return !result ? Result<Unit>.Failure("Failed to delete eyeglass") : Result<Unit>.Success(Unit.Value);
             }
         }

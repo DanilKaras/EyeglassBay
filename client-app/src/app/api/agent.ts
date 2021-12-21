@@ -5,6 +5,8 @@ import {history} from '../../index';
 import {store} from "../stores/store";
 import {User, UserFormValues} from "../models/user";
 import {EbayProductItem, EbayRequest} from "../models/ebaySearchRequest";
+import {SettingsModel} from "../models/settingsModel";
+
 axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
 axios.interceptors.request.use(config => {
@@ -21,9 +23,11 @@ axios.interceptors.response.use(async response => {
         case 400:
             if(typeof data === 'string'){
                 toast.error(data);
+                break;
             }
             if(config.method === 'get' && data.errors.hasOwnProperty('id')){
                history.push('/not-found');
+                break;
             }
             if(data.errors){
                 const modalStateErrors = [];
@@ -35,6 +39,7 @@ axios.interceptors.response.use(async response => {
                 throw modalStateErrors.flat();
             } else {
                 toast.error(data);
+                break;
             }
             break;
         case 401:
@@ -90,11 +95,18 @@ const EbayParser = {
         }
     }),
 }
+
+const Settings = {
+    getSettings: () => request.get<SettingsModel[]>('/Settings'),
+    saveSettings: (settings: SettingsModel[]) => request.post<SettingsModel[]>('/Settings', settings),
+    getCoefficient: () => request.get<number>('/Settings/Coefficient')
+}
     
 const agent = {
     EyeGlasses, 
     Account,
-    EbayParser
+    EbayParser,
+    Settings
 }
 
 export default agent;

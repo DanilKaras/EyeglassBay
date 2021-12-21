@@ -18,7 +18,6 @@ namespace EyeglassBay.Api.Extensions
         {
             services.AddIdentityCore<AppUser>(opt => {
                 opt.Password.RequireNonAlphanumeric = false;
-
             })
             .AddEntityFrameworkStores<DataContext>()
             .AddSignInManager<SignInManager<AppUser>>();
@@ -60,6 +59,7 @@ namespace EyeglassBay.Api.Extensions
             // services.AddTransient<IAuthorizationHandler, IsHostRequirementHandler>();
             services.AddScoped<TokenService>();
             services.AddScoped<EbayParser>();
+            
             return services;
         }
     }

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using EyeglassBay.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace EyeglassBay.Persistence
@@ -58,6 +59,18 @@ namespace EyeglassBay.Persistence
                 await context.EyeGlasses.AddRangeAsync(eyeGlasses);
             }
 
+            var settings = (await context.Settings.ToListAsync()).ToDictionary(key => key.Key, val => val.Value);
+
+            if (!settings.ContainsKey("CalculationCoefficient"))
+            {
+                var setting = new EbayStoreSettings
+                {
+                    Key = "CalculationCoefficient",
+                    Value = "0.175"
+                };
+                await context.Settings.AddAsync(setting);
+            }
+            
             await context.SaveChangesAsync();
         }
     }

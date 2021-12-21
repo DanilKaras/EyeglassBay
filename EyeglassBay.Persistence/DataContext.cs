@@ -11,5 +11,6 @@ namespace EyeglassBay.Persistence
             
         }
         public DbSet<EyeGlass> EyeGlasses { get; set; }
+        public DbSet<EbayStoreSettings> Settings { get; set; }
     }
 }

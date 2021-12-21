@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using EyeglassBay.Api.Extensions;
 using EyeglassBay.Domain.Entities;
 using EyeglassBay.Persistence;
 using Microsoft.AspNetCore.Hosting;

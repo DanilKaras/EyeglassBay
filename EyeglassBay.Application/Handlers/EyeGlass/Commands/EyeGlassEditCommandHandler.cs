@@ -33,6 +33,7 @@ namespace EyeglassBay.Application.Handlers
                 _context = context;
                 _mapper = mapper;
             }
+            
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
                 var eyeGlass = await _context.EyeGlasses.FindAsync(request.EyeGlass.Id);

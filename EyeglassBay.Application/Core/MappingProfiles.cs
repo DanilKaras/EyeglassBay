@@ -1,4 +1,5 @@
 using AutoMapper;
+using EyeglassBay.Domain.DTOs;
 using EyeglassBay.Domain.Entities;
 
 namespace EyeglassBay.Application.Core
@@ -8,6 +9,8 @@ namespace EyeglassBay.Application.Core
         public MappingProfiles()
         {
             CreateMap<EyeGlass, EyeGlass>();
+            
+            CreateMap<EbayStoreSettings, EbayStoreSettings>();
         }
     }
 }

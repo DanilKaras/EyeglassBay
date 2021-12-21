@@ -5,6 +5,7 @@ import UserStore from "./userStore";
 import ModalStore from "./modalStore";
 import EbayParserStore from "./ebayParserStore";
 import SearchStore from "./searchStore";
+import SettingsStore from "./settingsStore";
 
 interface Store{
     eyeglassStore: EyeglassStore;
@@ -13,6 +14,7 @@ interface Store{
     modalStore: ModalStore;
     ebayParserStore: EbayParserStore;
     requestStore: SearchStore;
+    settingsStore: SettingsStore;
 }
 
 export const store: Store = {
@@ -21,7 +23,8 @@ export const store: Store = {
     userStore: new UserStore(),
     modalStore: new ModalStore(),
     ebayParserStore: new EbayParserStore(),
-    requestStore: new SearchStore()
+    requestStore: new SearchStore(),
+    settingsStore: new SettingsStore()
 }
 
 export const StoreContext = createContext(store);

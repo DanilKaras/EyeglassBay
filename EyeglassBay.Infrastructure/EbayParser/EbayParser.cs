@@ -9,7 +9,9 @@ using System.Web;
 using EyeglassBay.Domain.DTOs;
 using EyeglassBay.Domain.Models;
 using EyeglassBay.Infrastructure.Models;
+using EyeglassBay.Persistence;
 using HtmlAgilityPack;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
@@ -17,13 +19,15 @@ namespace EyeglassBay.Infrastructure.EbayParser
 {
     public class EbayParser
     {
+        private readonly DataContext _context;
         private readonly ILogger _logger;
         private readonly IConfiguration _configuration;
-        private const decimal coeff = 0.825m;
-        public EbayParser(ILogger<EbayParser> logger, IConfiguration configuration)
+        private decimal _calculationCoefficient;
+        public EbayParser(ILogger<EbayParser> logger, IConfiguration configuration, DataContext context)
         {
             _logger = logger;
             _configuration = configuration;
+            _context = context;
         }
 
         public async Task<EbayProductItem> GetMinPricedItemAsync(EbayRequestDto request)
@@ -45,6 +49,7 @@ namespace EyeglassBay.Infrastructure.EbayParser
             var result = new List<EbayProductItem>();
             try
             {
+                await SetCalculationCoefficient();
                 const int pageNumber = 1;
 
                 if (!int.TryParse(_configuration["Ebay:ItemsPerPage"], out var itemsPerPage)) return result;
@@ -403,9 +408,24 @@ namespace EyeglassBay.Infrastructure.EbayParser
             }
         }
 
+        private async Task SetCalculationCoefficient()
+        {
+            const string calculationCoefficient = "CalculationCoefficient";
+            var settings = await _context.Settings
+                .SingleOrDefaultAsync(setting => setting.Key.Equals(calculationCoefficient));
+
+            if (decimal.TryParse(settings.Value, out var result))
+            {
+                _calculationCoefficient = result;
+                return;
+            }
+
+            _calculationCoefficient = 0;
+        }
+        
         private decimal CalculateProfitForDiscountedItem(EbayProductItem item, decimal buyingPrice, int percentage)
         {
-            var priceWithNoCommission = item.TotalPrice * coeff -5;
+            var priceWithNoCommission = item.TotalPrice * (1m - _calculationCoefficient) -5;
             var clearPrice = buyingPrice * (1 - (decimal)percentage / 100);
             return decimal.Round(priceWithNoCommission - clearPrice, 2);
         }
@@ -413,7 +433,7 @@ namespace EyeglassBay.Infrastructure.EbayParser
         private decimal CalculateProfitForNonDiscountedItem(EbayProductItem item, decimal buyingPrice, int percentage)
         {
             var priceRemoveAmountWhenNoDiscount = item.TotalPrice * (decimal) 0.87;
-            var priceWithNoCommission = priceRemoveAmountWhenNoDiscount * coeff -5;
+            var priceWithNoCommission = priceRemoveAmountWhenNoDiscount * (1m - _calculationCoefficient) -5;
             var clearPrice = buyingPrice * (1 - (decimal)percentage / 100);
             return decimal.Round(priceWithNoCommission - clearPrice, 2);
         }

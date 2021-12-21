@@ -4,7 +4,8 @@ import {AxiosError} from "axios";
 export default class CommonStore {
     error: AxiosError | null = null;
     token: string | null = window.localStorage.getItem('jwt');
-    appLoaded: boolean = false;
+    appLoaded: boolean = false
+    calculationCoefficient: number = 0;
     constructor() {
         makeAutoObservable(this);
         reaction(() => this.token,
@@ -28,4 +29,6 @@ export default class CommonStore {
     setAppLoaded = () => {
         this.appLoaded = true;
     }
+
+    
 }

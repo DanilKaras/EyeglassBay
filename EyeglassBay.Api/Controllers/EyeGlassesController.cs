@@ -14,9 +14,6 @@ namespace EyeglassBay.Api.Controllers
     public class EyeGlassesController : BaseApiController
     {
 
-        public EyeGlassesController()
-        {
-        }
         [HttpGet]
         public async Task<ActionResult<List<EyeGlass>>> GetEyeGlasses(CancellationToken cancellationToken)
         {
